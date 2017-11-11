@@ -6,8 +6,6 @@
 #include <QCryptographicHash>
 #include <QMessageBox>
 #include "helper.h"
-#include "base58.h"
-#include <iostream>
 
 namespace Ui {
 class BitcoinTests;

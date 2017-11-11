@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab_BitcoinAddressTests">
      <attribute name="title">
@@ -306,7 +306,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_LibTestSHA256_2">
        <attribute name="title">
@@ -402,6 +402,75 @@
        <attribute name="title">
         <string>Base58</string>
        </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_RIPEMD160">
+       <attribute name="title">
+        <string>RIPEMD-160</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_PublicECDSAKey">
+       <attribute name="title">
+        <string>Public ECDSA Key</string>
+       </attribute>
+       <widget class="QLineEdit" name="lineEdit_PrivECDSAKeyTests">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>10</y>
+          <width>571</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivECDSAKeyTests">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>101</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> Private ECDSA Key:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_CalcPublicECDSAKeyTests">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>40</y>
+          <width>81</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PublicECDSAKeyTests">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>101</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Public ECDSA Key:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTests">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>70</y>
+          <width>571</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
