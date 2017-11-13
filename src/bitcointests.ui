@@ -105,14 +105,14 @@
        <widget class="QPushButton" name="pushButton_PraseToECDSAQt">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>530</x>
           <y>10</y>
-          <width>151</width>
+          <width>161</width>
           <height>23</height>
          </rect>
         </property>
         <property name="text">
-         <string>Prase =&gt; Priv ECDSA (Qt)</string>
+         <string>Prase =&gt; Priv ECDSA (Bitcoin)</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="lineEdit_AfterBase58">
@@ -225,7 +225,7 @@
          <rect>
           <x>180</x>
           <y>10</y>
-          <width>351</width>
+          <width>331</width>
           <height>20</height>
          </rect>
         </property>
@@ -306,13 +306,121 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_LibTestSHA256_2">
+      <widget class="QWidget" name="tab_HashCalculator">
        <attribute name="title">
-        <string>SHA-256</string>
+        <string>Hash Encode Calculator</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton_toLower">
+       <widget class="QPushButton" name="pushButton_CalcStringHash">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>250</y>
+          <width>121</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calculate String Hash</string>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="textEdit_DataForHash">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>681</width>
+          <height>151</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_HashResult">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>220</y>
+          <width>681</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_DataForHashToLower">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>10</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>to Lower</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_DataForHashToUpper">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>10</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>to Upper</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_DataForHash">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>11</y>
+          <width>121</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Data:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_HashResult">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>200</y>
+          <width>71</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Hash:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_HashType">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>250</y>
+          <width>121</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_HashFunction">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>250</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Function:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_HashToLower">
         <property name="geometry">
          <rect>
           <x>90</x>
@@ -325,66 +433,7 @@
          <string>to Lower</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_DataSHA256">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>121</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Data:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_SHA256Hash">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>200</y>
-          <width>71</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>SHA-256 hash:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalcSHA256HashQt">
-        <property name="geometry">
-         <rect>
-          <x>540</x>
-          <y>250</y>
-          <width>151</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Calculate SHA-256 Hash (Qt)</string>
-        </property>
-       </widget>
-       <widget class="QTextEdit" name="textEdit_DataSHA256">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>681</width>
-          <height>161</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_SHA256Hash">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>220</y>
-          <width>681</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_ToUpper">
+       <widget class="QPushButton" name="pushButton_HashToUpper">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -397,16 +446,19 @@
          <string>to Upper</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QWidget" name="tab_LibTestBase58">
-       <attribute name="title">
-        <string>Base58</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_RIPEMD160">
-       <attribute name="title">
-        <string>RIPEMD-160</string>
-       </attribute>
+       <widget class="QPushButton" name="pushButton_CalcHexHash">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>250</y>
+          <width>101</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calculate Hex Hash</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_PublicECDSAKey">
        <attribute name="title">

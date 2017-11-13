@@ -29,6 +29,7 @@ private:
 
 private slots:
     void buttonsClicked();
+    void slotHashTypeChange(QString);
 
 };
 
