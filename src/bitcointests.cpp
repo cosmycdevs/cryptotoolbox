@@ -8,17 +8,18 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     ui->setupUi(this);
 
     QStringList hashTypes;
+    hashTypes << "SHA-256 (Bitcoin)";
     hashTypes << "SHA-256 (Qt)";
-    hashTypes << "SHA-256 (Bitoin)";
     hashTypes << "Base58";
     hashTypes << "RIPEMD 160";
 
     ui->comboBox_HashType->addItems(hashTypes);
-    ui->comboBox_HashType->setCurrentIndex(1);
-    slotHashTypeChange("");
+//    ui->comboBox_HashType->setCurrentIndex(1);
+//    slotHashTypeChange("");
     connect(ui->comboBox_HashType, SIGNAL(currentTextChanged(QString)),    SLOT(slotHashTypeChange(QString)));
 
     ui->textEdit_DataForHash->setText("00010966776006953D5567439E5E39F86A0D273BEE");
+    ui->lineEdit_PrivECDSAKeyTests->setText("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725");
 
     connect( ui->pushButton_HashToLower,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_HashToUpper,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -26,6 +27,9 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_DataForHashToUpper,         SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_CalcHexHash,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_CalcStringHash,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_PublicKeyECDAKeyToLower,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_PublicKeyECDAKeyToUpper,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
     connect( ui->pushButton_PraseToECDSAQt,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_CalculateWIF,               SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -53,7 +57,7 @@ void BitcoinTests::updatePrivECDSAKey()
     //getQtHexHashSha256
     QString privECDSAKey = helper::getHexHashSha256FromString(phrase).toUpper();
     ui->lineEdit_PrivECDSAKey->setText(privECDSAKey);
-    ui->lineEdit_PrivECDSAKeyTests->setText(privECDSAKey);
+    //ui->lineEdit_PrivECDSAKeyTests->setText(privECDSAKey);
 }
 
 void BitcoinTests::updateWIF()
@@ -88,7 +92,16 @@ void BitcoinTests::buttonsClicked()
         updateWIF();
     }
     else if ( sender()->objectName() == "pushButton_CalcPublicECDSAKeyTests" ) {
-        QString pubKey = helper::getPublicECDSAKey(ui->lineEdit_PrivECDSAKeyTests->text());
+        ui->lineEdit_PublicECDSAKeyTestsUncompressed->setText(helper::getPublicECDSAKey(ui->lineEdit_PrivECDSAKeyTests->text()).toUpper());
+        ui->lineEdit_PublicECDSAKeyTestsCompressed->setText(helper::getPublicECDSAKey(ui->lineEdit_PrivECDSAKeyTests->text(), true).toUpper());
+    }
+    else if ( sender()->objectName() == "pushButton_PublicKeyECDAKeyToUpper" ) {
+        ui->lineEdit_PublicECDSAKeyTestsUncompressed->setText(ui->lineEdit_PublicECDSAKeyTestsUncompressed->text().toUpper());
+        ui->lineEdit_PublicECDSAKeyTestsCompressed->setText(ui->lineEdit_PublicECDSAKeyTestsCompressed->text().toUpper());
+    }
+    else if ( sender()->objectName() == "pushButton_PublicKeyECDAKeyToLower" ) {
+        ui->lineEdit_PublicECDSAKeyTestsUncompressed->setText(ui->lineEdit_PublicECDSAKeyTestsUncompressed->text().toLower());
+        ui->lineEdit_PublicECDSAKeyTestsCompressed->setText(ui->lineEdit_PublicECDSAKeyTestsCompressed->text().toLower());
     }
     else if ( sender()->objectName() == "pushButton_CalculateWIF" ) {
         updateWIF();
@@ -108,7 +121,6 @@ void BitcoinTests::buttonsClicked()
     else if ( sender()->objectName() == "pushButton_CalcHexHash" || sender()->objectName() == "pushButton_CalcStringHash" ) {
         QString hashFunction = ui->comboBox_HashType->currentText();
         QString dataForHash = ui->textEdit_DataForHash->toPlainText();
-        qDebug() << "hashFunction == " << hashFunction << "; dataForHash == " << dataForHash;
         QString hashResult = "";
         if ( sender()->objectName() == "pushButton_CalcHexHash" ) {
             if (hashFunction == "SHA-256 (Qt)") {
@@ -117,7 +129,7 @@ void BitcoinTests::buttonsClicked()
             else if (hashFunction == "RIPEMD 160") {
                 hashResult = helper::getHexHashRipemd160FromHexString(dataForHash);
             }
-            else if (hashFunction == "SHA-256 (Bitoin)") {
+            else if (hashFunction == "SHA-256 (Bitcoin)") {
                 hashResult = helper::getHexHashSha256FromHexString(dataForHash);
             }
             else {
@@ -134,7 +146,7 @@ void BitcoinTests::buttonsClicked()
             else if (hashFunction == "Base58") {
                 hashResult = helper::encodeBase58(dataForHash);
             }
-            else if (hashFunction == "SHA-256 (Bitoin)") {
+            else if (hashFunction == "SHA-256 (Bitcoin)") {
                 hashResult = helper::getHexHashSha256FromString(dataForHash);
             }
             else {

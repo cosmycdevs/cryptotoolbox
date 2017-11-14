@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <assert.h>
+#include "secp256k1/include/secp256k1.h"
 
 #define QT_STRING  helper::convertStdStringToQString
 #define STD_STRING helper::convertQStringToStdString
@@ -32,7 +33,7 @@ namespace helper {
     QString getHexHashSha256FromHexString(const QString &str);
     QString getHexHashSha256FromString(const QString &str);
 
-    QString getPublicECDSAKey(const QString &privKey);
+    QString getPublicECDSAKey(const QString &privKey, bool compressedFlag = false);
 }
 
 #endif // HELPER_H

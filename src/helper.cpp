@@ -1,8 +1,7 @@
 #include "helper.h"
 
-//#include "secp256k1.c" //secp256k1/src/
-//#include "include/secp256k1.h" //secp256k1/
 #include "base58.h"
+#include "secp256k1/src/secp256k1.c"
 #include "crypto/ripemd160.h"
 #include "crypto/sha256.h"
 
@@ -81,53 +80,23 @@ QString helper::getHexHashSha256FromString(const QString &str)
     return encodeSha256(str.toUtf8().data()).toHex();
 }
 
-QString helper::getPublicECDSAKey(const QString &privKeyQString)
+QString helper::getPublicECDSAKey(const QString &privKeyQString, bool compressedFlag)
 {
-    qDebug() << "privKeyQString == " << privKeyQString;
-/*
-    QByteArray baFromHexString = QByteArray::fromHex(privKeyQString.toUtf8().data());
 
-//    std::string stdPrivKey = STD_STRING(QString(baFromHexString));
-//    std::cout << "stdPrivKey == " << stdPrivKey << std::endl;
-    unsigned char privkey[baFromHexString.size()];
-    for (int i = 0; i < baFromHexString.size(); i++) {
-        privkey[i] = baFromHexString.at(i);
-    }
-
-//    const char* charPtrPrivKey = stdPrivKey.c_str();
-//    std::cout << "charPtrPrivKey == " << charPtrPrivKey << std::endl;
-//    const unsigned char* privkey = reinterpret_cast<const unsigned char *>(charPtrPrivKey);
-
-//    const unsigned char* privkey = (const unsigned char*) stdPrivKey.c_str();
-//    std::cout << "privkey    == " << privkey << std::endl;
-
-    //master
-    secp256k1_context *secp256k1_context_sign = nullptr;
-    secp256k1_context_sign = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
-    assert(secp256k1_context_sign != nullptr);
-
-    int ret = secp256k1_ec_seckey_verify(secp256k1_context_sign, privkey);
-    std::cout << "secp256k1_ec_seckey_verify() == " << ret << std::endl;
-    if (!ret) {
-        std::cout << "Error in secp256k1_ec_seckey_verify()" << std::endl;
-        return "";
-    }
-    assert(ret);
-
-    std::cout << "secp256k1_context_sign->ecmult_gen_ctx.prec == " << secp256k1_context_sign->ecmult_gen_ctx.prec << std::endl;
-
+    QByteArray ba = QByteArray::fromHex(privKeyQString.toUtf8().data());
+    const unsigned char *seckey = reinterpret_cast<const unsigned char *>(ba.data());
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
     secp256k1_pubkey pubkey;
-    ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pubkey, privkey);
+
+    int ret = secp256k1_ec_pubkey_create(ctx, &pubkey, seckey);
     assert(ret);
 
-    std::cout << "secp256k1_ec_pubkey_create() == " << ret  << std::endl;
+    size_t clen = compressedFlag ? 33 : 65;
+    unsigned char result[clen];
+    ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+    assert(ret);
 
-    size_t clen = 65;
-    unsigned char pub[65];
-    size_t publen = 65;
-    secp256k1_ec_pubkey_serialize(secp256k1_context_sign, pub, &publen, &pubkey, SECP256K1_EC_UNCOMPRESSED);
-    //assert(result.size() == clen);
-    std::cout << "pub == " << pub << std::endl;
-*/
-    return "";
+    QByteArray baRes = QByteArray(reinterpret_cast<const char*>(result), clen).toHex();
+    qDebug() << "baRes == " << QString(baRes);
+    return QString(baRes);
 }

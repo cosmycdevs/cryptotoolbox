@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>763</width>
+    <width>948</width>
     <height>417</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>741</width>
+      <width>931</width>
       <height>361</height>
      </rect>
     </property>
@@ -40,7 +40,7 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>711</width>
+        <width>911</width>
         <height>311</height>
        </rect>
       </property>
@@ -61,7 +61,7 @@
          <rect>
           <x>180</x>
           <y>100</y>
-          <width>511</width>
+          <width>711</width>
           <height>20</height>
          </rect>
         </property>
@@ -71,7 +71,7 @@
          <rect>
           <x>180</x>
           <y>220</y>
-          <width>511</width>
+          <width>711</width>
           <height>20</height>
          </rect>
         </property>
@@ -92,7 +92,7 @@
        <widget class="QPushButton" name="pushButton_CalculateWIF">
         <property name="geometry">
          <rect>
-          <x>610</x>
+          <x>820</x>
           <y>70</y>
           <width>75</width>
           <height>23</height>
@@ -105,7 +105,7 @@
        <widget class="QPushButton" name="pushButton_PraseToECDSAQt">
         <property name="geometry">
          <rect>
-          <x>530</x>
+          <x>730</x>
           <y>10</y>
           <width>161</width>
           <height>23</height>
@@ -120,7 +120,7 @@
          <rect>
           <x>180</x>
           <y>250</y>
-          <width>511</width>
+          <width>711</width>
           <height>20</height>
          </rect>
         </property>
@@ -156,7 +156,7 @@
          <rect>
           <x>180</x>
           <y>160</y>
-          <width>511</width>
+          <width>711</width>
           <height>20</height>
          </rect>
         </property>
@@ -179,7 +179,7 @@
          <rect>
           <x>180</x>
           <y>130</y>
-          <width>511</width>
+          <width>711</width>
           <height>20</height>
          </rect>
         </property>
@@ -202,7 +202,7 @@
          <rect>
           <x>180</x>
           <y>40</y>
-          <width>511</width>
+          <width>711</width>
           <height>20</height>
          </rect>
         </property>
@@ -225,7 +225,7 @@
          <rect>
           <x>180</x>
           <y>10</y>
-          <width>331</width>
+          <width>541</width>
           <height>20</height>
          </rect>
         </property>
@@ -301,12 +301,12 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>711</width>
+        <width>911</width>
         <height>311</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_HashCalculator">
        <attribute name="title">
@@ -315,7 +315,7 @@
        <widget class="QPushButton" name="pushButton_CalcStringHash">
         <property name="geometry">
          <rect>
-          <x>570</x>
+          <x>770</x>
           <y>250</y>
           <width>121</width>
           <height>23</height>
@@ -330,7 +330,7 @@
          <rect>
           <x>10</x>
           <y>40</y>
-          <width>681</width>
+          <width>881</width>
           <height>151</height>
          </rect>
         </property>
@@ -340,7 +340,7 @@
          <rect>
           <x>10</x>
           <y>220</y>
-          <width>681</width>
+          <width>881</width>
           <height>20</height>
          </rect>
         </property>
@@ -348,7 +348,7 @@
        <widget class="QPushButton" name="pushButton_DataForHashToLower">
         <property name="geometry">
          <rect>
-          <x>610</x>
+          <x>810</x>
           <y>10</y>
           <width>75</width>
           <height>23</height>
@@ -361,7 +361,7 @@
        <widget class="QPushButton" name="pushButton_DataForHashToUpper">
         <property name="geometry">
          <rect>
-          <x>530</x>
+          <x>730</x>
           <y>10</y>
           <width>75</width>
           <height>23</height>
@@ -449,7 +449,7 @@
        <widget class="QPushButton" name="pushButton_CalcHexHash">
         <property name="geometry">
          <rect>
-          <x>460</x>
+          <x>660</x>
           <y>250</y>
           <width>101</width>
           <height>23</height>
@@ -469,7 +469,7 @@
          <rect>
           <x>120</x>
           <y>10</y>
-          <width>571</width>
+          <width>771</width>
           <height>20</height>
          </rect>
         </property>
@@ -490,7 +490,7 @@
        <widget class="QPushButton" name="pushButton_CalcPublicECDSAKeyTests">
         <property name="geometry">
          <rect>
-          <x>610</x>
+          <x>810</x>
           <y>40</y>
           <width>81</width>
           <height>23</height>
@@ -500,27 +500,76 @@
          <string>Send</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_PublicECDSAKeyTests">
+       <widget class="QLabel" name="label_PublicECDSAKeyTestsUncompressed">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>101</width>
+          <width>181</width>
           <height>20</height>
          </rect>
         </property>
         <property name="text">
-         <string>Public ECDSA Key:</string>
+         <string>Public ECDSA Key (uncompressed):</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTests">
+       <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTestsUncompressed">
         <property name="geometry">
          <rect>
-          <x>120</x>
-          <y>70</y>
-          <width>571</width>
+          <x>10</x>
+          <y>90</y>
+          <width>881</width>
           <height>20</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTestsCompressed">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>130</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PublicECDSAKeyTestsCompressed">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>181</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Public ECDSA Key (compressed):</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_PublicKeyECDAKeyToUpper">
+        <property name="geometry">
+         <rect>
+          <x>730</x>
+          <y>160</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>to Upper</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_PublicKeyECDAKeyToLower">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>160</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>to Lower</string>
         </property>
        </widget>
       </widget>
@@ -533,7 +582,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>763</width>
+     <width>948</width>
      <height>21</height>
     </rect>
    </property>
