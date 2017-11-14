@@ -59,10 +59,9 @@ auto FindRanges(uint256_t pattern)
     return ranges;
 }
 
-int main()
+uint64_t GetComplexity(uint256_t pattern)
 {
-    auto begin = std::chrono::system_clock::now();
-    auto ranges = FindRanges(GetDecimalPattern("1A"));
+    auto ranges = FindRanges(pattern);
 
     uint256_t result;
     // summing all variants that match our pattern
@@ -71,9 +70,25 @@ int main()
         result += pair.second - pair.first;
     }
 
+    return static_cast<uint64_t>(MaxAmountOf20byteNumbers/(result/ChecksumBytes));
+}
+
+long double GetLavishness(long double bounty, uint64_t complexity)
+{
+    return std::exp2(32.0L) * bounty / complexity;
+}
+
+int main()
+{
+    auto begin = std::chrono::system_clock::now();
+
+    auto complexity = GetComplexity(GetDecimalPattern("1A"));
+    auto lavishness = GetLavishness(10, complexity);
+
     auto end = std::chrono::system_clock::now();
 
-    std::cout << "Complexity: " << MaxAmountOf20byteNumbers/(result/ChecksumBytes) << std::endl;
+    std::cout << "Complexity: " << complexity << std::endl;
+    std::cout << "Lavishness: " << lavishness << std::endl;
     std::cout << "Duration (microseconds): " << std::chrono::duration<double, std::micro>(end - begin).count() << std::endl;
     return 0;
 }
