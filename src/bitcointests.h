@@ -26,6 +26,7 @@ private:
 
     void updatePrivECDSAKey();
     void updateWIF();
+    void runCommand(QString);
 
 private slots:
     void buttonsClicked();

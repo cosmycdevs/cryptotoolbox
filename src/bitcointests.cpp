@@ -21,19 +21,32 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     ui->textEdit_DataForHash->setText("00010966776006953D5567439E5E39F86A0D273BEE");
     ui->lineEdit_PrivECDSAKeyTests->setText("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725");
 
-    connect( ui->pushButton_HashToLower,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_HashToUpper,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_DataForHashToLower,         SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_DataForHashToUpper,         SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_CalcHexHash,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_CalcStringHash,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    ui->lineEdit_VanityPrivECDSAKey1_S->setText("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725");
+    ui->lineEdit_VanityPrivECDSAKey2_S->setText("B18427B169E86DE681A1A62588E1D02AE4A7E83C1B413849989A76282A7B562F");
+    runCommand("pushButton_CalcSumOfPrivKeys");
 
-    connect( ui->pushButton_PublicKeyECDAKeyToLower,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_PublicKeyECDAKeyToUpper,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    ui->lineEdit_VanityPrivECDSAKey1_M->setText("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725");
+    ui->lineEdit_VanityPrivECDSAKey2_M->setText("B18427B169E86DE681A1A62588E1D02AE4A7E83C1B413849989A76282A7B562F");
+    runCommand("pushButton_CalcMultiplicationOfPrivKeys");
 
-    connect( ui->pushButton_PraseToECDSAQt,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_CalculateWIF,               SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_CalcPublicECDSAKeyTests,    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_HashToLower,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_HashToUpper,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_DataForHashToLower,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_DataForHashToUpper,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalcHexHash,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalcStringHash,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_PublicKeyECDAKeyToLower,        SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_PublicKeyECDAKeyToUpper,        SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_PraseToECDSAQt,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalculateWIF,                   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalcPublicECDSAKeyTests,        SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_CalcSumOfPrivKeys,              SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalcSumOfPublicKeys,            SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_CalcMultiplicationOfPrivKeys,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
 }
 
@@ -85,44 +98,52 @@ void BitcoinTests::updateWIF()
     ui->lineEdit_AfterBase58->setText(helper::encodeBase58(beforeBase58));
 }
 
-void BitcoinTests::buttonsClicked()
+void BitcoinTests::slotHashTypeChange(QString)
 {
-    if ( sender()->objectName() == "pushButton_PraseToECDSAQt" ) {
+    bool enabled = (ui->comboBox_HashType->currentText() == "Base58") ? false : true;
+    ui->pushButton_HashToLower->setEnabled(enabled);
+    ui->pushButton_HashToUpper->setEnabled(enabled);
+    ui->pushButton_CalcHexHash->setEnabled(enabled);
+}
+
+void BitcoinTests::runCommand(QString command)
+{
+    if ( command == "pushButton_PraseToECDSAQt" ) {
         updatePrivECDSAKey();
         updateWIF();
     }
-    else if ( sender()->objectName() == "pushButton_CalcPublicECDSAKeyTests" ) {
+    else if ( command == "pushButton_CalcPublicECDSAKeyTests" ) {
         ui->lineEdit_PublicECDSAKeyTestsUncompressed->setText(helper::getPublicECDSAKey(ui->lineEdit_PrivECDSAKeyTests->text()).toUpper());
         ui->lineEdit_PublicECDSAKeyTestsCompressed->setText(helper::getPublicECDSAKey(ui->lineEdit_PrivECDSAKeyTests->text(), true).toUpper());
     }
-    else if ( sender()->objectName() == "pushButton_PublicKeyECDAKeyToUpper" ) {
+    else if ( command == "pushButton_PublicKeyECDAKeyToUpper" ) {
         ui->lineEdit_PublicECDSAKeyTestsUncompressed->setText(ui->lineEdit_PublicECDSAKeyTestsUncompressed->text().toUpper());
         ui->lineEdit_PublicECDSAKeyTestsCompressed->setText(ui->lineEdit_PublicECDSAKeyTestsCompressed->text().toUpper());
     }
-    else if ( sender()->objectName() == "pushButton_PublicKeyECDAKeyToLower" ) {
+    else if ( command == "pushButton_PublicKeyECDAKeyToLower" ) {
         ui->lineEdit_PublicECDSAKeyTestsUncompressed->setText(ui->lineEdit_PublicECDSAKeyTestsUncompressed->text().toLower());
         ui->lineEdit_PublicECDSAKeyTestsCompressed->setText(ui->lineEdit_PublicECDSAKeyTestsCompressed->text().toLower());
     }
-    else if ( sender()->objectName() == "pushButton_CalculateWIF" ) {
+    else if ( command == "pushButton_CalculateWIF" ) {
         updateWIF();
     }
-    else if ( sender()->objectName() == "pushButton_DataForHashToLower" ) {
+    else if ( command == "pushButton_DataForHashToLower" ) {
         ui->textEdit_DataForHash->setText(ui->textEdit_DataForHash->toPlainText().toLower());
     }
-    else if ( sender()->objectName() == "pushButton_DataForHashToUpper" ) {
+    else if ( command == "pushButton_DataForHashToUpper" ) {
         ui->textEdit_DataForHash->setText(ui->textEdit_DataForHash->toPlainText().toUpper());
     }
-    else if ( sender()->objectName() == "pushButton_HashToLower" ) {
+    else if ( command == "pushButton_HashToLower" ) {
         ui->lineEdit_HashResult->setText(ui->lineEdit_HashResult->text().toLower());
     }
-    else if ( sender()->objectName() == "pushButton_HashToUpper" ) {
+    else if ( command == "pushButton_HashToUpper" ) {
         ui->lineEdit_HashResult->setText(ui->lineEdit_HashResult->text().toUpper());
     }
-    else if ( sender()->objectName() == "pushButton_CalcHexHash" || sender()->objectName() == "pushButton_CalcStringHash" ) {
+    else if ( command == "pushButton_CalcHexHash" || command == "pushButton_CalcStringHash" ) {
         QString hashFunction = ui->comboBox_HashType->currentText();
         QString dataForHash = ui->textEdit_DataForHash->toPlainText();
         QString hashResult = "";
-        if ( sender()->objectName() == "pushButton_CalcHexHash" ) {
+        if ( command == "pushButton_CalcHexHash" ) {
             if (hashFunction == "SHA-256 (Qt)") {
                 hashResult = helper::getQtHexHashSha256FromHexString(dataForHash);
             }
@@ -153,8 +174,18 @@ void BitcoinTests::buttonsClicked()
                 qDebug() << "pushButton_CalcStringHash; unknown hashFunction == " << hashFunction;
             }
         }
-
         ui->lineEdit_HashResult->setText(hashResult);
+    }
+    else if ( command == "pushButton_CalcSumOfPrivKeys" ) {
+        ui->lineEdit_VanitySumOfPrivKeys->setText(helper::getPrivateKeysSum(ui->lineEdit_VanityPrivECDSAKey1_S->text(), ui->lineEdit_VanityPrivECDSAKey2_S->text()).toUpper());
+        ui->lineEdit_VanityPublicECDSAKey1->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey1_S->text()).toUpper());
+        ui->lineEdit_VanityPublicECDSAKey2->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey2_S->text()).toUpper());
+    }
+    else if ( command == "pushButton_CalcSumOfPublicKeys" ) {
+        QString res = helper::getPublicKeysSum(ui->lineEdit_VanityPublicECDSAKey1->text().trimmed(), ui->lineEdit_VanityPublicECDSAKey2->text().trimmed());
+    }
+    else if ( command == "pushButton_CalcMultiplicationOfPrivKeys" ) {
+        ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());
     }
     else {
         qDebug() << "Core::buttonsClicked(); Unknown sender()->objectName() == " << sender()->objectName();
@@ -162,10 +193,7 @@ void BitcoinTests::buttonsClicked()
 
 }
 
-void BitcoinTests::slotHashTypeChange(QString)
+void BitcoinTests::buttonsClicked()
 {
-    bool enabled = (ui->comboBox_HashType->currentText() == "Base58") ? false : true;
-    ui->pushButton_HashToLower->setEnabled(enabled);
-    ui->pushButton_HashToUpper->setEnabled(enabled);
-    ui->pushButton_CalcHexHash->setEnabled(enabled);
+    runCommand(sender()->objectName());
 }

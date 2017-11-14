@@ -1,3 +1,5 @@
+//https://github.com/ThePiachu/GoBitTest/tree/master/app
+//https://gobittest.appspot.com
 #include "bitcointests.h"
 #include <QApplication>
 
@@ -8,7 +10,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     BitcoinTests w;
-    w.init("v1.0.3");
+    w.init("v1.0.4");
     w.show();
 
     return a.exec();

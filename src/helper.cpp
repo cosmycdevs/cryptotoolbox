@@ -85,7 +85,7 @@ QString helper::getPublicECDSAKey(const QString &privKeyQString, bool compressed
 
     QByteArray ba = QByteArray::fromHex(privKeyQString.toUtf8().data());
     const unsigned char *seckey = reinterpret_cast<const unsigned char *>(ba.data());
-    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
     secp256k1_pubkey pubkey;
 
     int ret = secp256k1_ec_pubkey_create(ctx, &pubkey, seckey);
@@ -96,7 +96,86 @@ QString helper::getPublicECDSAKey(const QString &privKeyQString, bool compressed
     ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
     assert(ret);
 
-    QByteArray baRes = QByteArray(reinterpret_cast<const char*>(result), clen).toHex();
-    qDebug() << "baRes == " << QString(baRes);
-    return QString(baRes);
+    return QString(QByteArray(reinterpret_cast<const char*>(result), clen).toHex());
+}
+
+QString helper::getPrivateKeysSum(const QString &key1, const QString &key2)
+{
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+    QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
+    unsigned char *result = reinterpret_cast<unsigned char *>(ba1.data());
+
+    QByteArray ba2 = QByteArray::fromHex(key2.toUtf8().data());
+    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+
+    bool ret = secp256k1_ec_privkey_tweak_add(ctx, result, tweak);
+    assert(ret);
+
+    return QString(QByteArray(reinterpret_cast<const char*>(result), strlen((char*)result)).toHex());
+}
+
+int helper::qt_secp256k1_ec_privkey_tweak_mul(const secp256k1_context* ctx, unsigned char *seckey, const unsigned char *tweak) {
+    secp256k1_scalar factor;
+    secp256k1_scalar sec;
+    int ret = 0;
+    int overflow = 0;
+    VERIFY_CHECK(ctx != NULL);
+    ARG_CHECK(seckey != NULL);
+    ARG_CHECK(tweak != NULL);
+
+    secp256k1_scalar_set_b32(&factor, tweak, &overflow);
+    secp256k1_scalar_set_b32(&sec, seckey, NULL);
+    ret = !overflow && secp256k1_eckey_privkey_tweak_mul(&sec, &factor);
+    //memset(seckey, 0, 32);
+    //seckey = new unsigned char[32]();
+    //seckey = calloc(32, sizeof(unsigned char));
+    if (ret) {
+        secp256k1_scalar_get_b32(seckey, &sec);
+    }
+
+    secp256k1_scalar_clear(&sec);
+    secp256k1_scalar_clear(&factor);
+    return ret;
+}
+
+QString helper::getPrivateKeysMultiplication(const QString &key1, const QString &key2)
+{
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN); // | SECP256K1_CONTEXT_VERIFY
+
+    QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
+    unsigned char *result = reinterpret_cast<unsigned char *>(ba1.data());
+
+    QByteArray ba2 = QByteArray::fromHex(key2.toUtf8().data());
+    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+
+    int ret = secp256k1_ec_privkey_tweak_mul(ctx, result, tweak);
+    assert(ret);
+
+    return QString(QByteArray(reinterpret_cast<const char*>(result), strlen((char*)result)).toHex());
+}
+
+QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag)
+{
+    size_t clen = compressedFlag ? 33 : 65;
+
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+    QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
+    const unsigned char *input = reinterpret_cast<const unsigned char *>(ba1.data());
+
+    secp256k1_pubkey pubkey;
+    int ret = secp256k1_ec_pubkey_parse(ctx, &pubkey, input, clen);
+    assert(ret);
+
+    QByteArray ba2 = QByteArray::fromHex(key2.toUtf8().data());
+    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+
+    ret = secp256k1_ec_pubkey_tweak_add(ctx, &pubkey, tweak);
+    assert(ret);
+
+    unsigned char result[clen];
+    ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+    assert(ret);
+
+    return "";
 }
