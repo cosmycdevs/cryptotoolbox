@@ -1,5 +1,6 @@
 #include "bitcointests.h"
 #include "ui_bitcointests.h"
+#include "vanity.h"
 
 BitcoinTests::BitcoinTests(QWidget *parent) :
     QMainWindow(parent),
@@ -47,6 +48,7 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_CalcSumOfPublicKeys,            SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
     connect( ui->pushButton_CalcMultiplicationOfPrivKeys,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalculatePattern,               SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
 }
 
@@ -186,6 +188,13 @@ void BitcoinTests::runCommand(QString command)
     }
     else if ( command == "pushButton_CalcMultiplicationOfPrivKeys" ) {
         ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());
+    }
+    else if (command == "pushButton_CalculatePattern") {
+        auto patterComplexity = cosmyc::Vanity::PatternComplexity(ui->lineEdit_Pattern->text()); //convert_to<double>();
+        ui->label_PatternComplexityRes->setText(helper::getStringFromDouble(patterComplexity.convert_to<double>()));
+
+        ui->label_PatternLavishnessRes->setText(helper::getStringFromDouble(cosmyc::Vanity::PatternLavishness(
+                                                    ui->lineEdit_Bountry->text().toULongLong(), patterComplexity)));
     }
     else {
         qDebug() << "Core::buttonsClicked(); Unknown sender()->objectName() == " << sender()->objectName();

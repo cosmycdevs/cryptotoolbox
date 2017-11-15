@@ -13,13 +13,15 @@ SOURCES += \
     main.cpp \
     libs/bitcoin/base58.cpp \
     libs/bitcoin/crypto/ripemd160.cpp \
-    libs/bitcoin/crypto/sha256.cpp
+    libs/bitcoin/crypto/sha256.cpp \
+    vanity.cpp
 HEADERS += \
     helper.h \
     bitcointests.h \
     libs/bitcoin/base58.h \
     libs/bitcoin/crypto/ripemd160.h \
-    libs/bitcoin/crypto/sha256.h
+    libs/bitcoin/crypto/sha256.h \
+    vanity.h
 FORMS += \
     bitcointests.ui
 
@@ -31,6 +33,9 @@ INCLUDEPATH += $$PWD/libs/bitcoin
 #INCLUDEPATH += c:/boost-1-65-1/include/boost-1_65_1
 
 #LIBS += "-Lc:/boost-1-65-1/lib" -llibboost_locale-mgw53-mt-1_65_1
+
+INCLUDEPATH += /usr/local/include
+LIBS += -L/usr/local/lib
 
 # from secp256k1/src/basic-config.h
 DEFINES -= USE_ASM_X86_64

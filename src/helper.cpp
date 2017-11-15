@@ -1,9 +1,13 @@
 #include "helper.h"
 
+#include <sstream>
+#include <iostream>
+
 #include "base58.h"
 #include "secp256k1/src/secp256k1.c"
 #include "crypto/ripemd160.h"
 #include "crypto/sha256.h"
+
 
 std::string helper::convertQStringToStdString(const QString &str)
 {
@@ -178,4 +182,26 @@ QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool 
     assert(ret);
 
     return "";
+}
+
+boost::multiprecision::uint256_t helper::binPow(boost::multiprecision::uint256_t val, boost::multiprecision::uint256_t power)
+{
+    boost::multiprecision::uint256_t res = 1;
+    while (power) {
+        if (power & 1)
+            res *= val;
+        val *= val;
+        power >>= 1;
+    }
+    return res;
+}
+
+
+QString helper::getStringFromDouble(double val)
+{
+    std::stringstream ss;
+    ss << std::setprecision( 15 );
+    ss << val;
+
+    return QString(ss.str().c_str());
 }
