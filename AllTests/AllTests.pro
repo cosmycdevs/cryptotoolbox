@@ -1,6 +1,6 @@
 QT -= gui
 
-CONFIG += c++14 console
+CONFIG += console c++14
 CONFIG -= app_bundle
 
 # The following define makes your compiler emit warnings if you use
@@ -14,7 +14,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += /usr/local/ssl/include/openssl
+INCLUDEPATH += ../../boost_1_65_1 \
+              /usr/local/ssl/include/openssl
+
 LIBS += -lssl -lcrypto
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    base58.cpp \
+    VanityAddressTest.cpp \
+    BitcoinAddressTest.cpp
+
+HEADERS += \
+    base58.h \
+    VanityAddressTest.hpp \
+    BitcoinAddressTest.hpp
