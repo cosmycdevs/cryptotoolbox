@@ -100,24 +100,34 @@ QString helper::getHexHashSha256FromString(const QString &str)
     return encodeSha256(str.toUtf8().data()).toHex();
 }
 
-QString helper::getPublicECDSAKey(const QString &privKeyQString, bool compressedFlag)
+QString helper::getPublicECDSAKey(
+        __in    const   QString &privKeyQString,
+        __in            bool    compressedFlag)
 {
+    QByteArray                  ba = QByteArray::fromHex(privKeyQString.toUtf8().data());
+    const unsigned char         *seckey = reinterpret_cast<const unsigned char *>(ba.data());
+    const secp256k1_context     *ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+    secp256k1_pubkey            pubkey;
+    int                         ret = 0;
+    size_t                      clen = compressedFlag ? 33 : 65;
+    std::vector<unsigned char>  ResultBuffer;
 
-    QByteArray ba = QByteArray::fromHex(privKeyQString.toUtf8().data());
-    const unsigned char *seckey = reinterpret_cast<const unsigned char *>(ba.data());
-    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-    secp256k1_pubkey pubkey;
-
-    int ret = secp256k1_ec_pubkey_create(ctx, &pubkey, seckey);
+    ret = secp256k1_ec_pubkey_create(ctx, &pubkey, seckey);
     assert(ret);
 
-    size_t clen = compressedFlag ? 33 : 65;
-    unsigned char result[clen];
-    ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+    ResultBuffer.resize(clen, 0);
+
+    ret = secp256k1_ec_pubkey_serialize(
+                ctx,
+                &ResultBuffer[0],
+                &clen,
+                &pubkey,
+                compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+
     assert(ret);
 
-    return QString(QByteArray(reinterpret_cast<const char*>(result), clen).toHex());
-}
+    return QString(QByteArray(reinterpret_cast<const char *>(&ResultBuffer[0]), clen).toHex());
+};
 
 QString helper::getPrivateKeysSum(const QString &key1, const QString &key2)
 {
@@ -177,24 +187,42 @@ QString helper::getPrivateKeysMultiplication(const QString &key1, const QString 
 
 QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag)
 {
-    size_t clen = compressedFlag ? 33 : 65;
+    secp256k1_context           *Context = nullptr;
+    size_t                      clen = compressedFlag ? 33 : 65;
+    QByteArray                  ba1;
+    QByteArray                  ba2;
+    secp256k1_pubkey            pubkey;
+    int                         ret;
+    std::vector<unsigned char>  ResultBuffer;
 
-    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-    QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
-    const unsigned char *input = reinterpret_cast<const unsigned char *>(ba1.data());
+    Context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-    secp256k1_pubkey pubkey;
-    int ret = secp256k1_ec_pubkey_parse(ctx, &pubkey, input, clen);
+    ba1 = QByteArray::fromHex(key1.toUtf8().data());
+
+    ret = secp256k1_ec_pubkey_parse(
+                Context,
+                &pubkey,
+                reinterpret_cast<const unsigned char *>(ba1.data()),
+                clen);
     assert(ret);
 
-    QByteArray ba2 = QByteArray::fromHex(key2.toUtf8().data());
-    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+    ba2 = QByteArray::fromHex(key2.toUtf8().data());
 
-    ret = secp256k1_ec_pubkey_tweak_add(ctx, &pubkey, tweak);
+    ret = secp256k1_ec_pubkey_tweak_add(
+                Context,
+                &pubkey,
+                reinterpret_cast<const unsigned char *>(ba2.data()));
     assert(ret);
 
-    unsigned char result[clen];
-    ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+    ResultBuffer.resize(clen, 0);
+
+    ret = secp256k1_ec_pubkey_serialize(
+            Context,
+            &ResultBuffer[0],
+            &clen,
+            &pubkey,
+            compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+
     assert(ret);
 
     return "";
