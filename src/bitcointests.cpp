@@ -94,7 +94,7 @@ void BitcoinTests::updateWIF()
     ui->lineEdit_First4BitesOf4->setText(stringFirst4BitesOf4);
 
     QString beforeBase58 = prependVersion + first4BitesOf4;
-    ui->lineEdit_6->setText(beforeBase58);
+    ui->lineEdit_Adding5AtTheEndOf2->setText(beforeBase58);
     ui->lineEdit_AfterBase58->setText(helper::encodeBase58(beforeBase58));
 }
 

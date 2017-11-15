@@ -6,801 +6,647 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>948</width>
-    <height>417</height>
+    <width>1151</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Bitcoin Tests</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTabWidget" name="tabWidget_Main">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>931</width>
-      <height>361</height>
-     </rect>
-    </property>
-    <property name="currentIndex">
-     <number>2</number>
-    </property>
-    <widget class="QWidget" name="tab_BitcoinAddressTests">
-     <attribute name="title">
-      <string>Bitcoin Address Tests</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="tab_PrivateKeyTests">
-     <attribute name="title">
-      <string>Private Key Tests</string>
-     </attribute>
-     <widget class="QTabWidget" name="tabWidget_PrivateKeyTests">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>911</width>
-        <height>311</height>
-       </rect>
-      </property>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget_Main">
       <property name="currentIndex">
        <number>1</number>
       </property>
-      <widget class="QWidget" name="tab_WIFToPrivKey">
+      <widget class="QWidget" name="tab_BitcoinAddressTests">
        <attribute name="title">
-        <string>Wallet import format to private key</string>
+        <string>Bitcoin Address Tests</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_PrivKeyToWIF">
+      <widget class="QWidget" name="tab_PrivateKeyTests">
        <attribute name="title">
-        <string>Private key to wallet import format</string>
+        <string>Private Key Tests</string>
        </attribute>
-       <widget class="QLineEdit" name="lineEdit_PrependVersion">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>100</y>
-          <width>711</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_6">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>220</y>
-          <width>711</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_First4BitesOf4">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>190</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>5. First 4 bytes of 4:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalculateWIF">
-        <property name="geometry">
-         <rect>
-          <x>820</x>
-          <y>70</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_PraseToECDSAQt">
-        <property name="geometry">
-         <rect>
-          <x>730</x>
-          <y>10</y>
-          <width>161</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Prase =&gt; Priv ECDSA (Bitcoin)</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_AfterBase58">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>250</y>
-          <width>711</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_SHA256HashOf2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>3. SHA-256 hash of 2:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_PrivECDSAKey">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>151</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>1. Private ECDSA Key:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_SHA256HashOf3">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>160</y>
-          <width>711</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_Phrase">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>37</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Phrase:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_SHA256HashOf2">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>130</y>
-          <width>711</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_6">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>220</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>6. Adding 5 at the end of 2:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_PrivECDSAKey">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>40</y>
-          <width>711</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_PrependVersion">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>100</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>2. Prepend version (add 0x80):</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_Phrase">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>10</y>
-          <width>541</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_First4BitesOf4">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>190</y>
-          <width>141</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_SHA256HashOf3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>160</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>4. SHA-256 hash of 3:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>250</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>7. Base58 encoding of 6:</string>
-        </property>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_11">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_PrivateKeyTests">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <widget class="QWidget" name="tab_WIFToPrivKey">
+           <attribute name="title">
+            <string>Wallet import format to private key</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_PrivKeyToWIF">
+           <attribute name="title">
+            <string>Private key to wallet import format</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_10">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_Phrase">
+              <property name="text">
+               <string>Phrase:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_Phrase">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="pushButton_PraseToECDSAQt">
+              <property name="text">
+               <string>Prase =&gt; Priv ECDSA (Bitcoin)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_PrivECDSAKey">
+              <property name="text">
+               <string>1. Private ECDSA Key:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_PrivECDSAKey"/>
+            </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="pushButton_CalculateWIF">
+              <property name="text">
+               <string>Send</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_PrependVersion">
+              <property name="text">
+               <string>2. Prepend version (add 0x80):</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_PrependVersion"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_SHA256HashOf2">
+              <property name="text">
+               <string>3. SHA-256 hash of 2:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_SHA256HashOf2"/>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_SHA256HashOf3">
+              <property name="text">
+               <string>4. SHA-256 hash of 3:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_SHA256HashOf3"/>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_First4BitesOf4">
+              <property name="text">
+               <string>5. First 4 bytes of 4:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_Adding5AtTheEndOf2">
+              <property name="text">
+               <string>6. Adding 5 at the end of 2:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_Adding5AtTheEndOf2"/>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_Base58EncodingOf6">
+              <property name="text">
+               <string>7. Base58 encoding of 6:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_AfterBase58"/>
+            </item>
+            <item row="6" column="1" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_First4BitesOf4"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_WIFChecksumChecking">
+           <attribute name="title">
+            <string>WIF checksum checking</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
-      <widget class="QWidget" name="tab_WIFChecksumChecking">
+      <widget class="QWidget" name="tab_VanityTests">
        <attribute name="title">
-        <string>WIF checksum checking</string>
+        <string>Vanity Tests</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_VanityAddressTests">
+          <property name="currentIndex">
+           <number>3</number>
+          </property>
+          <widget class="QWidget" name="tab_VanityAddresses">
+           <attribute name="title">
+            <string>Vanity Addresses</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_AllVanityAddressTests">
+           <attribute name="title">
+            <string>All Vanity Address Tests</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_VanitySumAddressTests">
+           <attribute name="title">
+            <string>Vanity Sum Address Tests</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout_VanitySumAddressTests">
+              <item row="0" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_VanityPrivECDSAKeys">
+                <item>
+                 <widget class="QLabel" name="label_VanityPrivECDSAKeys_S">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string> Private ECDSA Keys:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey1_S"/>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey2_S"/>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_VanityPrivECDSAKeys_button">
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>34</width>
+                      <height>17</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_CalcSumOfPrivKeys">
+                    <property name="text">
+                     <string>Send</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_VanityPublicECDSAKeys">
+                <item>
+                 <widget class="QLabel" name="label_VanityPublicECDSAKeys">
+                  <property name="text">
+                   <string>Public ECDSA Keys:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_VanityPublicECDSAKey1"/>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_VanityPublicECDSAKey2"/>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_VanityPublicECDSAKeys_button">
+                  <item>
+                   <spacer name="horizontalSpacer_2">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>34</width>
+                      <height>17</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_CalcSumOfPublicKeys">
+                    <property name="text">
+                     <string>Send</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout__VanitySumOfPrivKeys">
+                <item>
+                 <widget class="QLabel" name="label_VanitySumOfPrivKeys">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Sum of Private Keys:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_VanitySumOfPrivKeys"/>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_VanitySumOfPrivKeys">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_VanityMultiplyAddressTests">
+           <attribute name="title">
+            <string>Vanity Multiply Address Tests</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_CalcMultiplicationOfPrivKeys">
+              <item>
+               <widget class="QLabel" name="label_VanityPrivECDSAKeys_M">
+                <property name="text">
+                 <string> Private ECDSA Keys:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey1_M"/>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey2_M"/>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_CalcMultiplicationOfPrivKeys">
+                <item>
+                 <spacer name="horizontalSpacer_CalcMultiplicationOfPrivKeys">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_CalcMultiplicationOfPrivKeys">
+                  <property name="text">
+                   <string>Send</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_VanityMultiplicationOfPrivKeys">
+              <item>
+               <widget class="QLabel" name="label_VanityMultiplicationOfPrivKeys">
+                <property name="text">
+                 <string>Multiplication of Private Keys:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_VanityMultiplicationOfPrivKeys"/>
+              </item>
+             </layout>
+            </item>
+            <item row="2" column="0">
+             <spacer name="verticalSpacer_VanityMultiplyAddressTests">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_Brainwallet">
+       <attribute name="title">
+        <string>Brainwallet</string>
        </attribute>
       </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_VanityTests">
-     <attribute name="title">
-      <string>Vanity Tests</string>
-     </attribute>
-     <widget class="QTabWidget" name="tabWidget_VanityAddressTests">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>911</width>
-        <height>321</height>
-       </rect>
-      </property>
-      <property name="currentIndex">
-       <number>2</number>
-      </property>
-      <widget class="QWidget" name="tab_VanityAddresses">
+      <widget class="QWidget" name="tab_ProfOfBurn">
        <attribute name="title">
-        <string>Vanity Addresses</string>
+        <string>Proof of Burn</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tab_AllVanityAddressTests">
+      <widget class="QWidget" name="tab_SHA256">
        <attribute name="title">
-        <string>All Vanity Address Tests</string>
+        <string>Libs Tests</string>
        </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_VanitySumAddressTests">
-       <attribute name="title">
-        <string>Vanity Sum Address Tests</string>
-       </attribute>
-       <widget class="QLineEdit" name="lineEdit_VanitySumOfPrivKeys">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>210</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_VanitySumOfPrivKeys">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>190</y>
-          <width>111</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Sum of Private Keys:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_VanityPrivECDSAKeys_S">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>111</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string> Private ECDSA Keys:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalcSumOfPrivKeys">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>90</y>
-          <width>81</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey2_S">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>60</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey1_S">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_VanityPublicECDSAKeys">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>100</y>
-          <width>111</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Public ECDSA Keys:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalcSumOfPublicKeys">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>180</y>
-          <width>81</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_VanityPublicECDSAKey2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>150</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_VanityPublicECDSAKey1">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>120</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_VanityMultiplyAddressTests">
-       <attribute name="title">
-        <string>Vanity Multiply Address Tests</string>
-       </attribute>
-       <widget class="QLineEdit" name="lineEdit_VanityMultiplicationOfPrivKeys">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>210</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_VanityPrivECDSAKeys_M">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>111</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string> Private ECDSA Keys:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalcMultiplicationOfPrivKeys">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>90</y>
-          <width>81</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_VanityMultiplicationOfPrivKeys">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>190</y>
-          <width>141</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Multiplication of Private Keys:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey2_M">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>60</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey1_M">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_Brainwallet">
-     <attribute name="title">
-      <string>Brainwallet</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="tab_ProfOfBurn">
-     <attribute name="title">
-      <string>Proof of Burn</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="tab_SHA256">
-     <attribute name="title">
-      <string>Libs Tests</string>
-     </attribute>
-     <widget class="QTabWidget" name="tabWidget_LibsTests">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>911</width>
-        <height>311</height>
-       </rect>
-      </property>
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <widget class="QWidget" name="tab_HashCalculator">
-       <attribute name="title">
-        <string>Hash Encode Calculator</string>
-       </attribute>
-       <widget class="QPushButton" name="pushButton_CalcStringHash">
-        <property name="geometry">
-         <rect>
-          <x>770</x>
-          <y>250</y>
-          <width>121</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Calculate String Hash</string>
-        </property>
-       </widget>
-       <widget class="QTextEdit" name="textEdit_DataForHash">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>881</width>
-          <height>151</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_HashResult">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>220</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_DataForHashToLower">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>10</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>to Lower</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_DataForHashToUpper">
-        <property name="geometry">
-         <rect>
-          <x>730</x>
-          <y>10</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>to Upper</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_DataForHash">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>11</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Data:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_HashResult">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>200</y>
-          <width>71</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Hash:</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="comboBox_HashType">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>250</y>
-          <width>121</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_HashFunction">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>250</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Function:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_HashToLower">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>250</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>to Lower</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_HashToUpper">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>250</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>to Upper</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalcHexHash">
-        <property name="geometry">
-         <rect>
-          <x>660</x>
-          <y>250</y>
-          <width>101</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Calculate Hex Hash</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_PublicECDSAKey">
-       <attribute name="title">
-        <string>Public ECDSA Key</string>
-       </attribute>
-       <widget class="QLineEdit" name="lineEdit_PrivECDSAKeyTests">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>10</y>
-          <width>771</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_PrivECDSAKeyTests">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>101</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string> Private ECDSA Key:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_CalcPublicECDSAKeyTests">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>40</y>
-          <width>81</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Send</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_PublicECDSAKeyTestsUncompressed">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>181</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Public ECDSA Key (uncompressed):</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTestsUncompressed">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTestsCompressed">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>881</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_PublicECDSAKeyTestsCompressed">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>181</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Public ECDSA Key (compressed):</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_PublicKeyECDAKeyToUpper">
-        <property name="geometry">
-         <rect>
-          <x>730</x>
-          <y>160</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>to Upper</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_PublicKeyECDAKeyToLower">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>160</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>to Lower</string>
-        </property>
-       </widget>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_LibsTests">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <widget class="QWidget" name="tab_HashCalculator">
+           <attribute name="title">
+            <string>Hash Encode Calculator</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="gridLayout_DataForHash">
+              <item row="0" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_DataForHash">
+                <item>
+                 <widget class="QLabel" name="label_DataForHash">
+                  <property name="text">
+                   <string>Data:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_DataForHashToUpper">
+                  <property name="text">
+                   <string>to Upper</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_DataForHashToLower">
+                  <property name="text">
+                   <string>to Lower</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QTextEdit" name="textEdit_DataForHash"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_HashResult">
+                <property name="text">
+                 <string>Hash:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLineEdit" name="lineEdit_HashResult"/>
+              </item>
+              <item row="4" column="0">
+               <layout class="QHBoxLayout" name="horizontalLayout_HashFunction">
+                <item>
+                 <widget class="QPushButton" name="pushButton_HashToUpper">
+                  <property name="text">
+                   <string>to Upper</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_HashToLower">
+                  <property name="text">
+                   <string>to Lower</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_HashFunction">
+                  <property name="text">
+                   <string>Function:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBox_HashType"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_CalcHexHash">
+                  <property name="text">
+                   <string>Calculate Hex Hash</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_CalcStringHash">
+                  <property name="text">
+                   <string>Calculate String Hash</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <spacer name="verticalSpacer_HashCalculator">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_PublicECDSAKey">
+           <attribute name="title">
+            <string>Public ECDSA Key</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="1" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_PublicECDSAKeyTestsUncompressed">
+                <property name="text">
+                 <string>Public ECDSA Key (uncompressed):</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTestsUncompressed"/>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_PublicECDSAKeyTestsCompressed">
+                <property name="text">
+                 <string>Public ECDSA Key (compressed):</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_PublicECDSAKeyTestsCompressed"/>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_PublicKeyECDAKey">
+                <item>
+                 <spacer name="horizontalSpacer_PublicKeyECDAKey">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_PublicKeyECDAKeyToUpper">
+                  <property name="text">
+                   <string>to Upper</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_PublicKeyECDAKeyToLower">
+                  <property name="text">
+                   <string>to Lower</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_PrivECDSAKeyTests">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_PrivECDSAKeyTests">
+                <item>
+                 <widget class="QLabel" name="label_PrivECDSAKeyTests">
+                  <property name="text">
+                   <string> Private ECDSA Key:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_PrivECDSAKeyTests"/>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_CalcPublicECDSAKeyTests">
+                <item>
+                 <spacer name="horizontalSpacer_CalcPublicECDSAKeyTests">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_CalcPublicECDSAKeyTests">
+                  <property name="text">
+                   <string>Send</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item row="2" column="0">
+             <spacer name="verticalSpacer_PublicECDSAKey">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
-    </widget>
-   </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>948</width>
-     <height>21</height>
+     <width>1151</width>
+     <height>17</height>
     </rect>
    </property>
   </widget>
