@@ -22,9 +22,13 @@ LIBS += -lssl -lcrypto
 SOURCES += main.cpp \
     base58.cpp \
     VanityAddressTest.cpp \
-    BitcoinAddressTest.cpp
+    BitcoinAddressTest.cpp \
+    PrivateKeyTest.cpp \
+    utils.cpp
 
 HEADERS += \
-    base58.h \
     VanityAddressTest.hpp \
-    BitcoinAddressTest.hpp
+    BitcoinAddressTest.hpp \
+    PrivateKeyTest.hpp \
+    utils.hpp \
+    base58.hpp

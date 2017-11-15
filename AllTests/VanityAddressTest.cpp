@@ -6,7 +6,7 @@
 #include <sstream>
 #include <regex>
 
-#include "base58.h"
+#include "base58.hpp"
 
 using namespace boost::multiprecision;
 
