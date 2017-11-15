@@ -26,6 +26,26 @@ QString helper::encodeBase58(const QString &str)
     return QT_STRING(afterBase58Std);
 }
 
+QString helper::decodeBase58(const QString &str)
+{
+    QByteArray WIFArray = str.toUtf8();
+    char *buffer = WIFArray.data();
+
+    std::vector<unsigned char> vchVector;
+    if (!DecodeBase58(buffer, vchVector))
+        return "";
+
+    static const unsigned char  hexAlphas[] = "0123456789ABCDEF";
+
+    QString Result = "";
+    for (auto it : vchVector) {
+        Result += hexAlphas[(it & 0xF0) >> 4];
+        Result += hexAlphas[it & 0xF];
+    }
+
+    return Result;
+}
+
 QByteArray helper::getQtHexHashSha256(const QByteArray &ba)
 {
     return QCryptographicHash::hash(ba, QCryptographicHash::Sha256).toHex();
@@ -178,4 +198,35 @@ QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool 
     assert(ret);
 
     return "";
+}
+
+QString helper::GetRandomString()
+{
+   const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+   const int randomStringLength = 255; // assuming you want random strings of 12 characters
+
+   QString randomString;
+   for(int i=0; i<randomStringLength; ++i)
+   {
+       int index = qrand() % possibleCharacters.length();
+       QChar nextChar = possibleCharacters.at(index);
+       randomString.append(nextChar);
+   }
+   return randomString;
+}
+
+QString helper::generateWIF()
+{
+    QString phrase = GetRandomString();
+    QString privECDSAKey = helper::getHexHashSha256FromString(phrase).toUpper();
+    QString prependVersion = QString("80" + privECDSAKey);
+    QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
+    QString stingSHA256HashOf3 = helper::getHexHashSha256FromHexString(stingSHA256HashOf2).toUpper();
+    QByteArray first4BitesOf4;
+    for (int i = 0; i < 8; i++) {
+        first4BitesOf4.append(stingSHA256HashOf3.at(i));
+    }
+    QString stringFirst4BitesOf4 = QString(first4BitesOf4);
+    QString beforeBase58 = prependVersion + first4BitesOf4;
+    return helper::encodeBase58(beforeBase58);
 }

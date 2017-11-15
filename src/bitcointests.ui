@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_BitcoinAddressTests">
      <attribute name="title">
@@ -45,12 +45,151 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_WIFToPrivKey">
        <attribute name="title">
         <string>Wallet import format to private key</string>
        </attribute>
+       <widget class="QLabel" name="label_Priv1_WIF">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>161</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>1 - Wallet import format:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_Priv1_DropLast4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>85</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>3 - Dropping last 4 checksum bytes from 2:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_Priv1_Priv">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>110</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_Priv1_DropLast4">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>86</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_Priv1_Base58">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>63</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_Priv1_WIF">
+        <property name="geometry">
+         <rect>
+          <x>790</x>
+          <y>37</y>
+          <width>101</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_Priv1_Rand">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>101</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Random</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_Priv1_Base58">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>62</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>2 - Converting WIF as Base58 string to byte array:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_Priv1_Priv">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>109</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>4 - Dropping first byte. This is the private key:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_Priv1_WIF">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>40</y>
+          <width>601</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_PrivKeyToWIF">
        <attribute name="title">
@@ -274,6 +413,272 @@
        <attribute name="title">
         <string>WIF checksum checking</string>
        </attribute>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_WIF">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>40</y>
+          <width>601</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_WIF">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>161</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>1 - Wallet import format:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_PrivChkSum_WIF">
+        <property name="geometry">
+         <rect>
+          <x>800</x>
+          <y>37</y>
+          <width>101</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_PrivChkSum_Rand">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>101</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Random</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_Base58">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>62</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>2 - Converting WIF as Base58 string to byte array:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_Base58">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>63</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_DropLast4">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>86</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_DropLast4">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>85</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>3 - Dropping last 4 checksum bytes from 2:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_SHA1">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>109</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>4 - SHA-256 hash of 3:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_SHA1">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>110</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_SHA2">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>132</y>
+          <width>621</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_SHA2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>131</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>5 - SHA-256 hash of 4:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_Sum1">
+        <property name="geometry">
+         <rect>
+          <x>21</x>
+          <y>154</y>
+          <width>271</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>6 - First 4 bytes of 5, this is the calculated checksum:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_Sum1">
+        <property name="geometry">
+         <rect>
+          <x>351</x>
+          <y>155</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_PrivChkSum_Sum2">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>181</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_Sum2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>180</y>
+          <width>301</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>7 - Take the last 4 bytes of 2, this is the original checksum:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_End">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>210</y>
+          <width>541</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Are 6 and 7 identical? Does 2 start with a 0x80 byte? If so, success!</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivChkSum_Result">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>159</y>
+          <width>91</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>OK</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -508,6 +913,106 @@
      <attribute name="title">
       <string>Proof of Burn</string>
      </attribute>
+     <widget class="QLineEdit" name="lineEdit_PoB_AddrRoot">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>261</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_PoB_AddrRoot">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Address root:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_PoB_AddrFiller">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>42</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Address filler (single character):</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_PoB_AddrFiller">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>42</y>
+        <width>101</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_PoB">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Submit</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_PoB_Result">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Result:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_PoB_Result">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>120</y>
+        <width>261</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_SHA256">
      <attribute name="title">

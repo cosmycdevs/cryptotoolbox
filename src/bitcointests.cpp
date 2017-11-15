@@ -29,6 +29,19 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     ui->lineEdit_VanityPrivECDSAKey2_M->setText("B18427B169E86DE681A1A62588E1D02AE4A7E83C1B413849989A76282A7B562F");
     runCommand("pushButton_CalcMultiplicationOfPrivKeys");
 
+    // Init task "Proof of Burn"
+    ui->lineEdit_PoB_AddrRoot->setText("1Test");
+    ui->lineEdit_PoB_AddrFiller->setText("x");
+    runCommand("pushButton_PoB");
+
+    // Init task "Wallet import format to private key"
+    ui->lineEdit_Priv1_WIF->setText("5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ");
+    runCommand("pushButton_Priv1_WIF");
+
+    // Init task "WIF checksum checking"
+    ui->lineEdit_PrivChkSum_WIF->setText("5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ");
+    runCommand("pushButton_PrivChkSum_WIF");
+
     connect( ui->pushButton_HashToLower,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_HashToUpper,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_DataForHashToLower,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -48,6 +61,12 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
 
     connect( ui->pushButton_CalcMultiplicationOfPrivKeys,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
+    connect( ui->pushButton_PoB,                            SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_PrivChkSum_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_PrivChkSum_Rand,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_Priv1_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_Priv1_Rand,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 }
 
 BitcoinTests::~BitcoinTests()
@@ -71,6 +90,107 @@ void BitcoinTests::updatePrivECDSAKey()
     QString privECDSAKey = helper::getHexHashSha256FromString(phrase).toUpper();
     ui->lineEdit_PrivECDSAKey->setText(privECDSAKey);
     //ui->lineEdit_PrivECDSAKeyTests->setText(privECDSAKey);
+}
+
+void BitcoinTests::updatePoB()
+{
+    ui->lineEdit_PoB_Result->setText("");
+
+    QString AddressRoot = ui->lineEdit_PoB_AddrRoot->text().trimmed();
+    QString AddrFiller = ui->lineEdit_PoB_AddrFiller->text().trimmed();
+
+    if (AddrFiller.length() != 1) {
+        ui->lineEdit_PoB_Result->setText("Make the 'Address filler' field only 1 symbol length!");
+        return;
+    }
+
+    AddressRoot = AddressRoot.leftJustified(28, AddrFiller[0]);
+
+    ui->lineEdit_PoB_Result->setText(AddressRoot);
+}
+
+void BitcoinTests::updatePrivChkSum()
+{
+    /* WIF checksum checking
+        by andrewnn */
+
+    ui->lineEdit_PrivChkSum_Base58->setText("");
+    ui->lineEdit_PrivChkSum_DropLast4->setText("");
+    ui->lineEdit_PrivChkSum_SHA1->setText("");
+    ui->lineEdit_PrivChkSum_SHA2->setText("");
+    ui->lineEdit_PrivChkSum_Sum1->setText("");
+    ui->lineEdit_PrivChkSum_Sum2->setText("");
+    ui->label_PrivChkSum_Result->setText("");
+
+    try {
+
+        // 1 - Wallet import format
+        QString WIF = ui->lineEdit_PrivChkSum_WIF->text().trimmed();
+
+        // 2 - Converting WIF as Base58 string to byte array
+        QString WIFasByteArray = helper::decodeBase58(WIF);
+        ui->lineEdit_PrivChkSum_Base58->setText(WIFasByteArray);
+
+        // 3 - Dropping last 4 checksum bytes from 2
+        QString WIFCuted = WIFasByteArray;
+        WIFCuted.chop(4 * 2);
+        ui->lineEdit_PrivChkSum_DropLast4->setText(WIFCuted);
+
+        // 4 - SHA-256 hash of 3
+        WIFCuted = helper::getHexHashSha256FromHexString(WIFCuted).toUpper();
+        ui->lineEdit_PrivChkSum_SHA1->setText(WIFCuted);
+
+        // 5 - SHA-256 hash of 4
+        WIFCuted = helper::getHexHashSha256FromHexString(WIFCuted).toUpper();
+        ui->lineEdit_PrivChkSum_SHA2->setText(WIFCuted);
+
+        // 6 - First 4 bytes of 4, this is the checksum
+        QByteArray first4BitesOf4;
+        for (int i = 0; i < 4 * 2; ++i)
+            first4BitesOf4.append(WIFCuted.at(i));
+        QString Sum1(first4BitesOf4);
+        ui->lineEdit_PrivChkSum_Sum1->setText(Sum1);
+
+        // 7 - Take the last 4 bytes of 2, this is the original checksum
+        QString Sum2 = WIFasByteArray.right(4 * 2);
+        ui->lineEdit_PrivChkSum_Sum2->setText(Sum2);
+
+        ui->label_PrivChkSum_Result->setText(Sum1 == Sum2 ? "OK" : "Fail");
+    }
+    catch (...) {
+        // Something went wrong ...
+    }
+
+
+}
+
+void BitcoinTests::updateWIF2PrivateKey()
+{
+    /* Wallet import format to private key
+        by andrewnn */
+
+    ui->lineEdit_Priv1_Base58->setText("");
+    ui->lineEdit_Priv1_DropLast4->setText("");
+    ui->lineEdit_Priv1_Priv->setText("");
+
+    try {
+        // 1 - Wallet import format
+        QString WIF = ui->lineEdit_Priv1_WIF->text().trimmed();
+
+        // 2 - Converting WIF as Base58 string to byte array
+        QString WIFasByteArray = helper::decodeBase58(WIF);
+        ui->lineEdit_Priv1_Base58->setText(WIFasByteArray);
+
+        // 3 - Dropping last 4 checksum bytes from 2
+        QString WIFCuted = WIFasByteArray;
+        WIFCuted.chop(4 * 2);
+        ui->lineEdit_Priv1_DropLast4->setText(WIFCuted);
+
+        // 4 - Dropping first byte. This is the private key
+        WIFCuted.remove(0, 2);
+        ui->lineEdit_Priv1_Priv->setText(WIFCuted);
+
+    } catch (...) {}
 }
 
 void BitcoinTests::updateWIF()
@@ -108,7 +228,22 @@ void BitcoinTests::slotHashTypeChange(QString)
 
 void BitcoinTests::runCommand(QString command)
 {
-    if ( command == "pushButton_PraseToECDSAQt" ) {
+    if (command == "pushButton_Priv1_Rand") {
+        ui->lineEdit_Priv1_WIF->setText(helper::generateWIF());
+        updateWIF2PrivateKey();
+    }
+    else if (command == "pushButton_Priv1_WIF") {
+        updateWIF2PrivateKey();
+    }
+    else if (command == "pushButton_PrivChkSum_Rand") {
+        ui->lineEdit_PrivChkSum_WIF->setText(helper::generateWIF());
+        updatePrivChkSum();
+    } else if (command == "pushButton_PrivChkSum_WIF") {
+        updatePrivChkSum();
+    } else if (command == "pushButton_PoB") {
+        updatePoB();
+    }
+    else if ( command == "pushButton_PraseToECDSAQt" ) {
         updatePrivECDSAKey();
         updateWIF();
     }

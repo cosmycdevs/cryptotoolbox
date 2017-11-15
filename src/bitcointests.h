@@ -27,6 +27,9 @@ private:
     void updatePrivECDSAKey();
     void updateWIF();
     void runCommand(QString);
+    void updatePoB();
+    void updatePrivChkSum();
+    void updateWIF2PrivateKey();
 
 private slots:
     void buttonsClicked();
