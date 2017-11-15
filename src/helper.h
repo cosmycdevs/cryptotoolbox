@@ -19,6 +19,7 @@ namespace helper {
     QString convertStdStringToQString(const std::string &str);
 
     QString encodeBase58(const QString &str);
+    QString decodeBase58(const QString &str);
 
     QString     getQtHashSha256(const QString &str);
     QByteArray  getQtHexHashSha256(const QByteArray &ba);
@@ -41,6 +42,9 @@ namespace helper {
     QString getPrivateKeysMultiplication(const QString &key1, const QString &key2);
 
     QString getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag = false);
+
+    QString GetRandomString();
+    QString generateWIF();
 }
 
 #endif // HELPER_H
