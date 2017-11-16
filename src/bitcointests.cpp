@@ -190,8 +190,8 @@ void BitcoinTests::runCommand(QString command)
         ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());
     }
     else if (command == "pushButton_CalculatePattern") {
-        auto patterComplexity = cosmyc::Vanity::PatternComplexity(ui->lineEdit_Pattern->text()); //convert_to<double>();
-        ui->label_PatternComplexityRes->setText(helper::getStringFromDouble(patterComplexity.convert_to<double>()));
+        auto patterComplexity = cosmyc::Vanity::PatternComplexity(ui->lineEdit_Pattern->text());
+        ui->label_PatternComplexityRes->setText(helper::getStringFromDouble(patterComplexity));
 
         ui->label_PatternLavishnessRes->setText(helper::getStringFromDouble(cosmyc::Vanity::PatternLavishness(
                                                     ui->lineEdit_Bountry->text().toULongLong(), patterComplexity)));

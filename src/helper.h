@@ -7,8 +7,6 @@
 #include <QDebug>
 #include <iostream>
 
-#include <boost/multiprecision/cpp_int.hpp>
-
 #include <assert.h>
 #include "secp256k1/include/secp256k1.h"
 
@@ -43,8 +41,6 @@ namespace helper {
     QString getPrivateKeysMultiplication(const QString &key1, const QString &key2);
 
     QString getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag = false);
-
-    boost::multiprecision::uint256_t binPow (boost::multiprecision::uint256_t val, boost::multiprecision::uint256_t power);
 
     QString getStringFromDouble(double val);
 }

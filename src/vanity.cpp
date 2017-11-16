@@ -1,9 +1,11 @@
+
+#include <math.h>
 #include "vanity.h"
 
 
-boost::multiprecision::uint256_t cosmyc::Vanity::PatternComplexity(QString pattern)
+const double cosmyc::Vanity::PatternComplexity(const QString pattern)
 {
-    boost::multiprecision::uint256_t res = 1;
+    double res = 1;
     int index = 0;
 
     while(pattern[++index] == '1'
@@ -11,14 +13,12 @@ boost::multiprecision::uint256_t cosmyc::Vanity::PatternComplexity(QString patte
         res *= 256;
     }
 
-    return res * helper::binPow(boost::multiprecision::uint256_t(58),
-                                boost::multiprecision::uint256_t(pattern.size() - index)); // 58^m
+    return res * pow(double(58), double(pattern.size() - index)); // 58^m
 }
 
-double cosmyc::Vanity::PatternLavishness(const uint64_t bounty,
-                                         const boost::multiprecision::uint256_t pattern_compl)
+const double cosmyc::Vanity::PatternLavishness(const uint64_t bounty, const double pattern_compl)
 {
     // b - vanity address bounty (in Bitcoins)
     // c - vanity address complexity
-    return 0x100000000 * (bounty / static_cast<double>(pattern_compl)); // 2^32 * (b/c)
+    return 0x100000000 * (bounty / pattern_compl); // 2^32 * (b/c)
 }

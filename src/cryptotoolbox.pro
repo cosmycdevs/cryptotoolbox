@@ -34,8 +34,6 @@ INCLUDEPATH += $$PWD/libs/bitcoin
 
 #LIBS += "-Lc:/boost-1-65-1/lib" -llibboost_locale-mgw53-mt-1_65_1
 
-INCLUDEPATH += /usr/local/include
-LIBS += -L/usr/local/lib
 
 # from secp256k1/src/basic-config.h
 DEFINES -= USE_ASM_X86_64

@@ -1,7 +1,7 @@
 #include "helper.h"
 
 #include <sstream>
-#include <iostream>
+#include <iomanip>
 
 #include "base58.h"
 #include "secp256k1/src/secp256k1.c"
@@ -183,19 +183,6 @@ QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool 
 
     return "";
 }
-
-boost::multiprecision::uint256_t helper::binPow(boost::multiprecision::uint256_t val, boost::multiprecision::uint256_t power)
-{
-    boost::multiprecision::uint256_t res = 1;
-    while (power) {
-        if (power & 1)
-            res *= val;
-        val *= val;
-        power >>= 1;
-    }
-    return res;
-}
-
 
 QString helper::getStringFromDouble(double val)
 {
