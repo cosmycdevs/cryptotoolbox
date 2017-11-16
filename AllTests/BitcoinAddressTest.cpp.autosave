@@ -13,7 +13,7 @@ void BitcoinAddressTest::RunTests()
 
     std::string privateKey = "18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725";
 
-    auto publicKey(utils::PrivateToPublic(privateKey, POINT_CONVERSION_COMPRESSED));
+    auto publicKey(utils::PrivateToPublic(privateKey, POINT_CONVERSION_UNCOMPRESSED));
 
     std::cout << "Private Key: " << privateKey << std::endl;
     std::cout << "Public Key: " << publicKey << std::endl;

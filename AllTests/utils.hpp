@@ -3,13 +3,17 @@
 
 #include <vector>
 #include <string>
+#include <openssl/ec.h>
 
 namespace utils
 {
     std::vector<unsigned char> HexToBytes(const std::string& key);
     std::string BytesToHex(const std::vector<unsigned char>& bytes);
+
     std::vector<unsigned char> SHA256(const std::vector<unsigned char>& digest);
     std::vector<unsigned char> RIPEMD160(const std::vector<unsigned char>& digest);
+
+    std::string PrivateToPublic(const std::string& privateKey, point_conversion_form_t conversion);
 }
 
 #endif // UTILS_HPP

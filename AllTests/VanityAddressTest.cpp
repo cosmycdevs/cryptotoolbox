@@ -93,11 +93,13 @@ void VanityAddressTest::RunTests()
 
     auto begin = std::chrono::system_clock::now();
 
-    auto complexity = GetComplexity("1A");
+    std::string pattern = "1A";
+    auto complexity = GetComplexity(pattern);
     auto lavishness = GetLavishness(10, complexity);
 
     auto end = std::chrono::system_clock::now();
 
+    std::cout << "Pattern: " << pattern << std::endl;
     std::cout << "Complexity: " << complexity << std::endl;
     std::cout << "Lavishness: " << lavishness << std::endl;
     std::cout << "Duration (microseconds): " << std::chrono::duration<double, std::micro>(end - begin).count() << std::endl;
