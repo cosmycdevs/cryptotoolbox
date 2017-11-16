@@ -30,6 +30,7 @@ private:
     void updatePoB();
     void updatePrivChkSum();
     void updateWIF2PrivateKey();
+    void updateBrainwallet();
 
 private slots:
     void buttonsClicked();

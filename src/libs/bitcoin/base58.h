@@ -45,4 +45,6 @@ bool DecodeBase58(const char* psz, std::vector<unsigned char>& vchRet);
 bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet);
 
 
+//bool Inc58(char *in, size_t lenght, size_t digit);
+
 #endif // BASE58_H

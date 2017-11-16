@@ -42,6 +42,10 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     ui->lineEdit_PrivChkSum_WIF->setText("5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ");
     runCommand("pushButton_PrivChkSum_WIF");
 
+    // Init task "Brainwallet"
+    ui->lineEdit_BWt_SecPass->setText("correct horse battery staple");
+    runCommand("pushButton_BWt_SecPass");
+
     connect( ui->pushButton_HashToLower,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_HashToUpper,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_DataForHashToLower,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -65,8 +69,10 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_PrivChkSum_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_PrivChkSum_Rand,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
-    connect( ui->pushButton_Priv1_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_Priv1_Rand,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_Priv1_WIF,                      SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_Priv1_Rand,                     SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_BWt_SecPass,                     SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 }
 
 BitcoinTests::~BitcoinTests()
@@ -94,19 +100,30 @@ void BitcoinTests::updatePrivECDSAKey()
 
 void BitcoinTests::updatePoB()
 {
+    /* Proof of Burn
+        by andrewnn */
+
+
     ui->lineEdit_PoB_Result->setText("");
 
     QString AddressRoot = ui->lineEdit_PoB_AddrRoot->text().trimmed();
     QString AddrFiller = ui->lineEdit_PoB_AddrFiller->text().trimmed();
 
-    if (AddrFiller.length() != 1) {
-        ui->lineEdit_PoB_Result->setText("Make the 'Address filler' field only 1 symbol length!");
-        return;
-    }
+    try {
 
-    AddressRoot = AddressRoot.leftJustified(28, AddrFiller[0]);
+        if (AddrFiller.length() != 1) {
+            ui->lineEdit_PoB_Result->setText("Make the 'Address filler' field only 1 symbol length!");
+            return;
+        }
 
-    ui->lineEdit_PoB_Result->setText(AddressRoot);
+        AddressRoot = AddressRoot.leftJustified(28, AddrFiller[0]);
+        AddressRoot = helper::makeWIFCheckSum(AddressRoot);
+
+        ui->lineEdit_PoB_Result->setText(AddressRoot);
+
+    } catch (...) {}
+
+
 }
 
 void BitcoinTests::updatePrivChkSum()
@@ -193,6 +210,56 @@ void BitcoinTests::updateWIF2PrivateKey()
     } catch (...) {}
 }
 
+void BitcoinTests::updateBrainwallet()
+{
+    /* Brainwallet
+        by andrewnn */
+
+    ui->lineEdit_BWt_PrivKey->setText("");
+    ui->lineEdit_BWt_Res->setText("");
+
+    try {
+        // Secret pass phrase
+        QString SecPass = ui->lineEdit_BWt_SecPass->text().trimmed();
+
+        // Private key
+        QString privECDSAKey = helper::getHexHashSha256FromString(SecPass).toUpper();
+        ui->lineEdit_BWt_PrivKey->setText(privECDSAKey);
+
+        // Public key
+        QString publicKey = helper::getPublicECDSAKey(privECDSAKey).toUpper();
+        //QString publicKeyCompressed = helper::getPublicECDSAKey(privECDSAKey, true).toUpper();
+
+        // SHA256(public_key)
+        QString publicKeySHA256 = helper::getHexHashSha256FromHexString(publicKey).toUpper();
+
+        // address = RIPEMD-160(SHA256(public_key))
+        QString address = helper::getHexHashRipemd160FromHexString(publicKeySHA256).toUpper();
+
+        // address = (prepend the 0x00)
+        QString prepend = "00" + address;
+
+        // SHA256(prepend 00)
+        QString address256 = helper::getHexHashSha256FromHexString(prepend).toUpper();
+
+        // SHA256(SHA256(address))
+        QString address256256 = helper::getHexHashSha256FromHexString(address256).toUpper();
+
+        // First 4 bytes
+        QByteArray first4BitesArray;
+        for (int i = 0; i < 4 * 2; ++i)
+            first4BitesArray.append(address256256.at(i));
+
+        QString ResultHex = prepend + QString(first4BitesArray);
+        QString ResultBase58 = helper::encodeBase58(ResultHex);
+
+        // Resulting address
+        ui->lineEdit_BWt_Res->setText(ResultBase58);
+
+    } catch(...) {}
+
+}
+
 void BitcoinTests::updateWIF()
 {
     QString privECDSAKey = ui->lineEdit_PrivECDSAKey->text().trimmed();
@@ -228,7 +295,9 @@ void BitcoinTests::slotHashTypeChange(QString)
 
 void BitcoinTests::runCommand(QString command)
 {
-    if (command == "pushButton_Priv1_Rand") {
+    if (command == "pushButton_BWt_SecPass") {
+        updateBrainwallet();
+    } else if (command == "pushButton_Priv1_Rand") {
         ui->lineEdit_Priv1_WIF->setText(helper::generateWIF());
         updateWIF2PrivateKey();
     }

@@ -203,7 +203,7 @@ QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool 
 QString helper::GetRandomString()
 {
    const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-   const int randomStringLength = 255; // assuming you want random strings of 12 characters
+   const int randomStringLength = 255; // assuming you want random strings of 255 characters
 
    QString randomString;
    for(int i=0; i<randomStringLength; ++i)
@@ -229,4 +229,39 @@ QString helper::generateWIF()
     QString stringFirst4BitesOf4 = QString(first4BitesOf4);
     QString beforeBase58 = prependVersion + first4BitesOf4;
     return helper::encodeBase58(beforeBase58);
+}
+
+/*bool helper::testWIF(char *WIF) no need yet
+{
+    QString WIFasByteArray = helper::decodeBase58(QString(WIF));
+    QString WIFCuted = WIFasByteArray;
+    WIFCuted.chop(4 * 2);
+    WIFCuted = helper::getHexHashSha256FromHexString(WIFCuted).toUpper();
+    WIFCuted = helper::getHexHashSha256FromHexString(WIFCuted).toUpper();
+    QByteArray first4BitesOf4;
+    for (int i = 0; i < 4 * 2; ++i)
+        first4BitesOf4.append(WIFCuted.at(i));
+    QString Sum1(first4BitesOf4);
+    QString Sum2 = WIFasByteArray.right(4 * 2);
+
+    return Sum1 == Sum2;
+}*/
+
+
+QString helper::makeWIFCheckSum(QString WIF)
+{
+    QString WIFWork = helper::decodeBase58(QString(WIF));
+    WIFWork.chop(4 * 2);
+
+    QString WIFWorkCopy = WIFWork;
+    WIFWorkCopy = helper::getHexHashSha256FromHexString(WIFWorkCopy).toUpper();
+    WIFWorkCopy = helper::getHexHashSha256FromHexString(WIFWorkCopy).toUpper();
+
+    QByteArray first4BitesOf4;
+    for (int i = 0; i < 4 * 2; ++i)
+        first4BitesOf4.append(WIFWorkCopy.at(i));
+
+    WIFWork += QString(first4BitesOf4);
+
+    return helper::encodeBase58(WIFWork);
 }

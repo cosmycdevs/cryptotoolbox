@@ -45,6 +45,8 @@ namespace helper {
 
     QString GetRandomString();
     QString generateWIF();
+    //bool testWIF(char *);  no need yet
+    QString makeWIFCheckSum(QString WIF);
 }
 
 #endif // HELPER_H
