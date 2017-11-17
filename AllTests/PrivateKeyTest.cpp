@@ -4,7 +4,6 @@
 #include <iostream>
 #include <algorithm>
 
-#include "base58.hpp"
 #include "utils.hpp"
 
 const u_int CHECKSUM_BYTES = 4;
@@ -12,7 +11,7 @@ const u_int CHECKSUM_BYTES = 4;
 std::vector<unsigned char> PrivateKeyTest::WifToPrivateKey(const std::string& wif)
 {
     std::vector<unsigned char> key;
-    DecodeBase58(wif, key);
+    utils::DecodeBase58(wif, key);
 
     // drop last 4 checksum bytes
     key.erase(key.begin() + (key.size() - CHECKSUM_BYTES), key.end());
@@ -43,13 +42,13 @@ std::string PrivateKeyTest::PrivateKeyToWif(const std::vector<unsigned char>& pr
         key.push_back(byte);
     }
 
-    return EncodeBase58(key);
+    return utils::EncodeBase58(key);
 }
 
 bool PrivateKeyTest::WifChecksumTest(const std::string& wif)
 {
     std::vector<unsigned char> key;
-    DecodeBase58(wif, key);
+    utils::DecodeBase58(wif, key);
 
     // extract checksum for key and drop it
     std::vector<unsigned char> originalChecksum;

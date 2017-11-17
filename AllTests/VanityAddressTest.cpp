@@ -6,7 +6,7 @@
 #include <sstream>
 #include <regex>
 
-#include "base58.hpp"
+#include "utils.hpp"
 
 using namespace boost::multiprecision;
 
@@ -25,7 +25,7 @@ uint256_t VanityAddressTest::GetDecimalPattern(const std::string& stringPattern)
     uint256_t pattern;
     std::stringstream ss;
     std::vector<unsigned char> res;
-    DecodeBase58(stringPattern.c_str(), res);
+    utils::DecodeBase58(stringPattern.c_str(), res);
     for(auto&& c : res)
     {
         ss << std::hex << static_cast<short>(c);

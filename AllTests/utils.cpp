@@ -23,7 +23,7 @@ std::string utils::BytesToHex(const std::vector<unsigned char>& bytes)
     std::stringstream ss;
     for(auto&& byte : bytes)
     {
-        ss << std::hex << std::setfill('0') << std::setw(2) << (int)byte;
+        ss << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>(byte);
     }
 
     return ss.str();
@@ -47,22 +47,20 @@ std::vector<unsigned char> utils::RIPEMD160(const std::vector<unsigned char>& di
     return resultDigest;
 }
 
-std::string utils::PrivateToPublic(const std::string& privateKey, point_conversion_form_t conversion)
+std::string utils::PrivateToPublic(const std::string& privateKeyStr, point_conversion_form_t conversion)
 {
-    BIGNUM priv;
-    BN_init(&priv);
+    BIGNUM* privateKey = BN_new();
     EC_KEY* key = EC_KEY_new_by_curve_name(NID_secp256k1);
 
-    BIGNUM* hex2bnResult = &priv;
-    BN_hex2bn(&hex2bnResult, privateKey.c_str());
-    EC_KEY_set_private_key(key, &priv);
+    BN_hex2bn(&privateKey, privateKeyStr.c_str());
+    EC_KEY_set_private_key(key, privateKey);
 
     BN_CTX* ctx = BN_CTX_new();
     BN_CTX_start(ctx);
 
     auto group = EC_KEY_get0_group(key);
     auto publicKeyPoint = EC_POINT_new(group);
-    EC_POINT_mul(group, publicKeyPoint, &priv, nullptr, nullptr, ctx);
+    EC_POINT_mul(group, publicKeyPoint, privateKey, nullptr, nullptr, ctx);
     EC_KEY_set_public_key(key, publicKeyPoint);
 
     char* result = EC_POINT_point2hex(group, publicKeyPoint, conversion, ctx);
@@ -71,8 +69,78 @@ std::string utils::PrivateToPublic(const std::string& privateKey, point_conversi
     EC_POINT_free(publicKeyPoint);
     EC_KEY_free(key);
     BN_CTX_free(ctx);
-    BN_free(hex2bnResult);
+    BN_free(privateKey);
     free(result);
 
     return hexPublicKey;
+}
+
+std::string utils::PublicToBitcoinAddress(const std::string& publicKey)
+{
+    auto publicKeyHash = SHA256(HexToBytes(publicKey));
+    auto ripemdPublicKeyHash = RIPEMD160(publicKeyHash);
+
+    ripemdPublicKeyHash.insert(ripemdPublicKeyHash.begin(), 0);
+
+    auto firstChecksumHash = SHA256(ripemdPublicKeyHash);
+    auto secondChecksumHash = SHA256(firstChecksumHash);
+
+    ripemdPublicKeyHash.push_back(secondChecksumHash[0]);
+    ripemdPublicKeyHash.push_back(secondChecksumHash[1]);
+    ripemdPublicKeyHash.push_back(secondChecksumHash[2]);
+    ripemdPublicKeyHash.push_back(secondChecksumHash[3]);
+
+    return EncodeBase58(ripemdPublicKeyHash);
+}
+
+std::string utils::AddPrivateKeys(const std::string& firstPrivateKey, const std::string& secondPrivateKey)
+{
+    BIGNUM* privateKey1 = BN_new();
+    BIGNUM* privateKey2 = BN_new();
+    BIGNUM* result = BN_new();
+
+    BN_CTX* ctx = BN_CTX_new();
+    BN_CTX_init(ctx);
+
+    BN_hex2bn(&privateKey1, firstPrivateKey.c_str());
+    BN_hex2bn(&privateKey2, secondPrivateKey.c_str());
+
+    BN_add(result, privateKey1, privateKey2);
+
+    auto resultKeyHex = BN_bn2hex(result);
+    std::string key(resultKeyHex);
+
+    BN_free(privateKey1);
+    BN_free(privateKey2);
+    BN_free(result);
+    BN_CTX_free(ctx);
+    free(resultKeyHex);
+
+    return key;
+}
+
+std::string utils::MultiplyPrivateKeys(const std::string& firstPrivateKey, const std::string& secondPrivateKey)
+{
+    BIGNUM* privateKey1 = BN_new();
+    BIGNUM* privateKey2 = BN_new();
+    BIGNUM* result = BN_new();
+
+    BN_CTX* ctx = BN_CTX_new();
+    BN_CTX_init(ctx);
+
+    BN_hex2bn(&privateKey1, firstPrivateKey.c_str());
+    BN_hex2bn(&privateKey2, secondPrivateKey.c_str());
+
+    BN_mul(result, privateKey1, privateKey2, ctx);
+
+    auto resultKeyHex = BN_bn2hex(result);
+    std::string key(resultKeyHex);
+
+    BN_free(privateKey1);
+    BN_free(privateKey2);
+    BN_free(result);
+    BN_CTX_free(ctx);
+    free(resultKeyHex);
+
+    return key;
 }

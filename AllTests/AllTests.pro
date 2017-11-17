@@ -20,11 +20,15 @@ SOURCES += main.cpp \
     VanityAddressTest.cpp \
     BitcoinAddressTest.cpp \
     PrivateKeyTest.cpp \
-    utils.cpp
+    utils.cpp \
+    VanitySumTest.cpp \
+    VanityMultiplicationTest.cpp
 
 HEADERS += \
     VanityAddressTest.hpp \
     BitcoinAddressTest.hpp \
     PrivateKeyTest.hpp \
     utils.hpp \
-    base58.hpp
+    base58.hpp \
+    VanitySumTests.hpp \
+    VanityMultiplicationTest.hpp

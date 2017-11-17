@@ -9,7 +9,7 @@
 ///** All alphanumeric characters except for "0", "I", "O", and "l" */
 static const char* pszBase58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-bool DecodeBase58(const char* psz, std::vector<unsigned char>& vch)
+bool utils::DecodeBase58(const char* psz, std::vector<unsigned char>& vch)
 {
     // Skip leading spaces.
     while (*psz && isspace(*psz))
@@ -59,7 +59,7 @@ bool DecodeBase58(const char* psz, std::vector<unsigned char>& vch)
     return true;
 }
 
-std::string EncodeBase58(const unsigned char* pbegin, const unsigned char* pend)
+std::string utils::EncodeBase58(const unsigned char* pbegin, const unsigned char* pend)
 {
     // Skip & count leading zeroes.
     int zeroes = 0;
@@ -99,12 +99,12 @@ std::string EncodeBase58(const unsigned char* pbegin, const unsigned char* pend)
     return str;
 }
 
-std::string EncodeBase58(const std::vector<unsigned char>& vch)
+std::string utils::EncodeBase58(const std::vector<unsigned char>& vch)
 {
     return EncodeBase58(vch.data(), vch.data() + vch.size());
 }
 
-bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet)
+bool utils::DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet)
 {
     return DecodeBase58(str.c_str(), vchRet);
 }
