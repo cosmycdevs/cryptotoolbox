@@ -1,0 +1,12 @@
+INPUT(
+./release\helper.o
+./release\bitcointests.o
+./release\main.o
+./release\base58.o
+./release\ripemd160.o
+./release\sha256.o
+./release\uint256.o
+./release\utilstrencodings.o
+./release\arith_uint256.o
+./release\moc_bitcointests.o
+);

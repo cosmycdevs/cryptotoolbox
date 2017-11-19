@@ -79,7 +79,6 @@ void BitcoinTests::updateWIF()
     QString prependVersion = QString("80" + privECDSAKey);
     ui->lineEdit_PrependVersion->setText(prependVersion);
 
-    //getQtHexHashSha256FromHexString
     QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
     ui->lineEdit_SHA256HashOf2->setText(stingSHA256HashOf2);
 
@@ -180,9 +179,13 @@ void BitcoinTests::runCommand(QString command)
         ui->lineEdit_VanitySumOfPrivKeys->setText(helper::getPrivateKeysSum(ui->lineEdit_VanityPrivECDSAKey1_S->text(), ui->lineEdit_VanityPrivECDSAKey2_S->text()).toUpper());
         ui->lineEdit_VanityPublicECDSAKey1->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey1_S->text()).toUpper());
         ui->lineEdit_VanityPublicECDSAKey2->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey2_S->text()).toUpper());
+        ui->lineEdit_VanityPublicKeyFromSumOfPrivateKeys->setText(helper::getPublicECDSAKey(ui->lineEdit_VanitySumOfPrivKeys->text()).toUpper());
+        ui->lineEdit_VanityPublicKeyFromSumOfPrivateKeysCorrespondingAddress->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanityPublicKeyFromSumOfPrivateKeys->text()));
+        runCommand("pushButton_CalcSumOfPublicKeys");
     }
     else if ( command == "pushButton_CalcSumOfPublicKeys" ) {
-        QString res = helper::getPublicKeysSum(ui->lineEdit_VanityPublicECDSAKey1->text().trimmed(), ui->lineEdit_VanityPublicECDSAKey2->text().trimmed());
+        ui->lineEdit_VanitySumOfPublicKeys->setText(helper::getPublicKeysSum(ui->lineEdit_VanityPublicECDSAKey1->text().trimmed(), ui->lineEdit_VanityPublicECDSAKey2->text().trimmed()).toUpper());
+        ui->lineEdit_VanitySumOfPublicKeysCorrespondingAddress->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanitySumOfPublicKeys->text()));
     }
     else if ( command == "pushButton_CalcMultiplicationOfPrivKeys" ) {
         ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());

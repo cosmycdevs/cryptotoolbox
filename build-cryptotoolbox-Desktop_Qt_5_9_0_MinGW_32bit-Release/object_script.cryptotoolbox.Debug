@@ -1,0 +1,12 @@
+INPUT(
+./debug\helper.o
+./debug\bitcointests.o
+./debug\main.o
+./debug\base58.o
+./debug\ripemd160.o
+./debug\sha256.o
+./debug\uint256.o
+./debug\utilstrencodings.o
+./debug\arith_uint256.o
+./debug\moc_bitcointests.o
+);

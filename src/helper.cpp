@@ -15,6 +15,15 @@ QString helper::convertStdStringToQString(const std::string &str)
     return QTextCodec::codecForName("UTF8")->toUnicode(QByteArray(str.c_str()));
 }
 
+std::string helper::encodeBase58(const QByteArray &ba)
+{
+    std::vector<unsigned char> beforeBase58Vector;
+    for (int i = 0; i < ba.size(); i++) {
+        beforeBase58Vector.push_back(ba.at(i));
+    }
+    return EncodeBase58(beforeBase58Vector);
+}
+
 QString helper::encodeBase58(const QString &str)
 {
     QByteArray hexBeforeBase58 = QByteArray::fromHex(str.toUtf8().data());
@@ -115,33 +124,9 @@ QString helper::getPrivateKeysSum(const QString &key1, const QString &key2)
     return QString(QByteArray(reinterpret_cast<const char*>(result), strlen((char*)result)).toHex());
 }
 
-int helper::qt_secp256k1_ec_privkey_tweak_mul(const secp256k1_context* ctx, unsigned char *seckey, const unsigned char *tweak) {
-    secp256k1_scalar factor;
-    secp256k1_scalar sec;
-    int ret = 0;
-    int overflow = 0;
-    VERIFY_CHECK(ctx != NULL);
-    ARG_CHECK(seckey != NULL);
-    ARG_CHECK(tweak != NULL);
-
-    secp256k1_scalar_set_b32(&factor, tweak, &overflow);
-    secp256k1_scalar_set_b32(&sec, seckey, NULL);
-    ret = !overflow && secp256k1_eckey_privkey_tweak_mul(&sec, &factor);
-    //memset(seckey, 0, 32);
-    //seckey = new unsigned char[32]();
-    //seckey = calloc(32, sizeof(unsigned char));
-    if (ret) {
-        secp256k1_scalar_get_b32(seckey, &sec);
-    }
-
-    secp256k1_scalar_clear(&sec);
-    secp256k1_scalar_clear(&factor);
-    return ret;
-}
-
 QString helper::getPrivateKeysMultiplication(const QString &key1, const QString &key2)
 {
-    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN); // | SECP256K1_CONTEXT_VERIFY
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
     QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
     unsigned char *result = reinterpret_cast<unsigned char *>(ba1.data());
@@ -158,24 +143,52 @@ QString helper::getPrivateKeysMultiplication(const QString &key1, const QString 
 QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag)
 {
     size_t clen = compressedFlag ? 33 : 65;
+    int ret = 0;
 
     const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-    QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
-    const unsigned char *input = reinterpret_cast<const unsigned char *>(ba1.data());
 
-    secp256k1_pubkey pubkey;
-    int ret = secp256k1_ec_pubkey_parse(ctx, &pubkey, input, clen);
+    QByteArray key1ba = QByteArray::fromHex(key1.toUtf8().data());
+    const unsigned char *key1cuc = reinterpret_cast<const unsigned char *>(key1ba.data());
+    secp256k1_pubkey pubkey1;
+    ret = secp256k1_ec_pubkey_parse(ctx, &pubkey1, key1cuc, clen);
     assert(ret);
 
-    QByteArray ba2 = QByteArray::fromHex(key2.toUtf8().data());
-    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+    QByteArray key2ba = QByteArray::fromHex(key2.toUtf8().data());
+    const unsigned char *key2cuc = reinterpret_cast<const unsigned char *>(key2ba.data());
+    secp256k1_pubkey pubkey2;
+    ret = secp256k1_ec_pubkey_parse(ctx, &pubkey2, key2cuc, clen);
+    assert(ret);
 
-    ret = secp256k1_ec_pubkey_tweak_add(ctx, &pubkey, tweak);
+    const secp256k1_pubkey *pubkeys[2];
+    pubkeys[0] = &pubkey1;
+    pubkeys[1] = &pubkey2;
+
+    secp256k1_pubkey pubkey;
+    ret = secp256k1_ec_pubkey_combine(ctx, &pubkey, pubkeys, 2);
     assert(ret);
 
     unsigned char result[clen];
     ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
     assert(ret);
 
-    return "";
+    return QString(QByteArray(reinterpret_cast<const char*>(result), clen).toHex());
+}
+
+QString helper::getWIFFromPublicKey(const QString &pubkey)
+{
+    QByteArray ba = QByteArray::fromHex(pubkey.toUtf8().data());
+    QByteArray sha256FormHexPubkey = encodeSha256(ba);
+    QByteArray ripemd160OfSha256 = encodeRipemd160(sha256FormHexPubkey);
+    ripemd160OfSha256.insert(0, QChar(0x00));
+    QByteArray sha256FromRipemd160 = encodeSha256(ripemd160OfSha256);
+    QByteArray sha256FromSha256 = encodeSha256(sha256FromRipemd160);
+
+    for (int i = 0; i < 4; i++) {
+        ripemd160OfSha256.append(sha256FromSha256.at(i));
+    }
+
+    std::string stdWIF = encodeBase58(ripemd160OfSha256);
+
+    return QT_STRING(stdWIF);
+
 }

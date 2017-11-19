@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>948</width>
-    <height>417</height>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>0</y>
       <width>931</width>
-      <height>361</height>
+      <height>471</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -287,7 +287,7 @@
         <x>10</x>
         <y>10</y>
         <width>911</width>
-        <height>321</height>
+        <height>431</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -417,6 +417,98 @@
          <rect>
           <x>10</x>
           <y>120</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanitySumOfPublicKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>330</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanitySumOfPublicKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>310</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sum of Public Keys:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicKeyFromSumOfPrivateKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPublicKeyFromSumOfPrivateKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>230</y>
+          <width>201</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Public key from the sum of private keys:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPublicKeyFromSumOfPrivateKeysCorrAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>270</y>
+          <width>351</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Corresponding address (Public key from the sum of private keys):</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicKeyFromSumOfPrivateKeysCorrespondingAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>290</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanitySumOfPublicKeysCorrAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>350</y>
+          <width>351</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Corresponding address (Sum of Public Keys):</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanitySumOfPublicKeysCorrespondingAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>370</y>
           <width>881</width>
           <height>20</height>
          </rect>
