@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>948</width>
-    <height>417</height>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>0</y>
       <width>931</width>
-      <height>361</height>
+      <height>471</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -205,7 +205,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_6">
+       <widget class="QLineEdit" name="lineEdit_Adding5AtTheEndOf2">
         <property name="geometry">
          <rect>
           <x>180</x>
@@ -692,21 +692,845 @@
         <x>10</x>
         <y>10</y>
         <width>911</width>
-        <height>321</height>
+        <height>431</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_VanityAddresses">
        <attribute name="title">
         <string>Vanity Addresses</string>
        </attribute>
+       <widget class="QLineEdit" name="lineEdit_Pattern">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>40</y>
+          <width>441</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_Pattern">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>61</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Pattern:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_Bountry">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>80</y>
+          <width>201</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_Bountry">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>61</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Bounty:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PatternLavishness">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>220</y>
+          <width>131</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Pattern lavishness:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PatternComplexityRes">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>170</y>
+          <width>221</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PatternLavishnessRes">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>220</y>
+          <width>221</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PatternCompleity">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>170</y>
+          <width>131</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Pattern complexity:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_CalculatePattern">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>120</y>
+          <width>80</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PatternCompleity_2">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>80</y>
+          <width>61</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>BTC</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_AllVanityAddressTests">
        <attribute name="title">
         <string>All Vanity Address Tests</string>
        </attribute>
+       <widget class="QPushButton" name="pushButton_AllVan_Rand">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>6</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Random</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_lab1">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>10</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Input one</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_lab2">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>10</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Input two</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>81</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Private key</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_priv1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>30</y>
+          <width>301</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_priv2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>30</y>
+          <width>361</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_uncPK1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>51</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Uncompressed public key</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_uncPK2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>51</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>63</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Uncompressed address</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_uncA2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>74</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_A1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>74</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_cA2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>121</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>87</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Compressed public key</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_cPK2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>98</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_cA1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>121</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_cPK1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>98</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Compressed address</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uWIF1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>221</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>257</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Uncompressed address</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_AllVan_Calc">
+        <property name="geometry">
+         <rect>
+          <x>690</x>
+          <y>160</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calculate</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cPrivK2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>291</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uPK2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>200</y>
+          <width>361</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_7">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Uncompressed private key</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_8">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>210</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Uncompressed WIF</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uWIF2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>221</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>233</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Uncompressed public key</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uA1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>268</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uPK1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>200</y>
+          <width>301</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uPubK2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>244</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cPrivK1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>291</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_10">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>280</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Compressed private key</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uPubK1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>244</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_lab1_2">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>180</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>One + Two</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_uA2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>268</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cWIF1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>310</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cPubK1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>334</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cPubK2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>334</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cA2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>357</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_11">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>346</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Compressed address</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>299</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Compressed WIF</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cA1">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>357</y>
+          <width>301</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA2_cWIF2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>310</y>
+          <width>361</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_13">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>320</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Compressed public key</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_N1">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>145</y>
+          <width>121</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_14">
+        <property name="geometry">
+         <rect>
+          <x>142</x>
+          <y>142</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>NetByte (0 for MainNet)</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VA_N2">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>143</y>
+          <width>121</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_privkey_15">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>143</y>
+          <width>141</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Prefix byte (80 for MainNet)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_AllVan_lab1_3">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>180</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>One x Two</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_VanitySumAddressTests">
        <attribute name="title">
@@ -822,6 +1646,98 @@
          <rect>
           <x>10</x>
           <y>120</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanitySumOfPublicKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>330</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanitySumOfPublicKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>310</y>
+          <width>111</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sum of Public Keys:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicKeyFromSumOfPrivateKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPublicKeyFromSumOfPrivateKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>230</y>
+          <width>201</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Public key from the sum of private keys:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPublicKeyFromSumOfPrivateKeysCorrAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>270</y>
+          <width>351</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Corresponding address (Public key from the sum of private keys):</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicKeyFromSumOfPrivateKeysCorrespondingAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>290</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanitySumOfPublicKeysCorrAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>350</y>
+          <width>351</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Corresponding address (Sum of Public Keys):</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanitySumOfPublicKeysCorrespondingAddress">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>370</y>
           <width>881</width>
           <height>20</height>
          </rect>

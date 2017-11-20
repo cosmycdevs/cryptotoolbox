@@ -1,5 +1,6 @@
 #include "bitcointests.h"
 #include "ui_bitcointests.h"
+#include "vanity.h"
 
 BitcoinTests::BitcoinTests(QWidget *parent) :
     QMainWindow(parent),
@@ -46,6 +47,18 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     ui->lineEdit_BWt_SecPass->setText("correct horse battery staple");
     runCommand("pushButton_BWt_SecPass");
 
+    // Init Vanity Addresses
+    ui->lineEdit_Pattern->setText("1Address");
+    ui->lineEdit_Bountry->setText("1");
+    runCommand("pushButton_CalculatePattern");
+
+    // All vanity test
+    ui->lineEdit_VA_priv1->setText("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725");
+    ui->lineEdit_VA_priv2->setText("B18427B169E86DE681A1A62588E1D02AE4A7E83C1B413849989A76282A7B562F");
+    ui->lineEdit_VA_N1->setText("0");
+    ui->lineEdit_VA_N2->setText("80");
+    runCommand("pushButton_AllVan_Calc");
+
     connect( ui->pushButton_HashToLower,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_HashToUpper,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_DataForHashToLower,             SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -64,6 +77,7 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_CalcSumOfPublicKeys,            SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
     connect( ui->pushButton_CalcMultiplicationOfPrivKeys,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalculatePattern,               SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
     connect( ui->pushButton_PoB,                            SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_PrivChkSum_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -73,6 +87,11 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_Priv1_Rand,                     SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
     connect( ui->pushButton_BWt_SecPass,                     SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+    connect( ui->pushButton_AllVan_Calc,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_AllVan_Rand,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
+
 }
 
 BitcoinTests::~BitcoinTests()
@@ -260,13 +279,118 @@ void BitcoinTests::updateBrainwallet()
 
 }
 
+void BitcoinTests::randAllVanityTest()
+{
+    /* Random of All Vanity test
+        by andrewnn */
+
+    ui->lineEdit_VA_priv1->setText(helper::getHexHashSha256FromString(helper::GetRandomString()).toUpper());
+    ui->lineEdit_VA_priv2->setText(helper::getHexHashSha256FromString(helper::GetRandomString()).toUpper());
+}
+
+void BitcoinTests::updateAllVanityTest()
+{
+    /* All Vanity test
+        by andrewnn */
+
+    ui->lineEdit_VA_uncPK1->setText("");
+    ui->lineEdit_VA_uncPK2->setText("");
+
+    ui->lineEdit_VA_cPK1->setText("");
+    ui->lineEdit_VA_cPK2->setText("");
+
+    ui->lineEdit_VA2_uPK1->setText("");
+    ui->lineEdit_VA2_uPK2->setText("");
+
+    ui->lineEdit_VA2_uPubK1->setText("");
+    ui->lineEdit_VA2_uPubK2->setText("");
+
+    ui->lineEdit_VA2_uWIF1->setText("");
+    ui->lineEdit_VA2_uWIF2->setText("");
+
+    ui->lineEdit_VA2_uA1->setText("");
+    ui->lineEdit_VA2_uA2->setText("");
+
+    ui->lineEdit_VA2_cPubK1->setText("");
+    ui->lineEdit_VA2_cPubK2->setText("");
+
+    try {
+
+
+        QString privKey1 = ui->lineEdit_VA_priv1->text();
+        QString privKey2 = ui->lineEdit_VA_priv2->text();
+
+        // Uncompressed public key
+
+        QString publicKey1 = helper::getPublicECDSAKey(privKey1).toUpper();
+        QString publicKey2 = helper::getPublicECDSAKey(privKey2).toUpper();
+        ui->lineEdit_VA_uncPK1->setText(publicKey1);
+        ui->lineEdit_VA_uncPK2->setText(publicKey2);
+
+        // Compressed public key
+
+        QString publicKeyComp1 = helper::getPublicECDSAKey(privKey1, true).toUpper();
+        QString publicKeyComp2 = helper::getPublicECDSAKey(privKey2, true).toUpper();
+        ui->lineEdit_VA_cPK1->setText(publicKeyComp1);
+        ui->lineEdit_VA_cPK2->setText(publicKeyComp1);
+
+
+        // Sum and Mult
+
+        // Uncompressed private key
+
+        QString privateSum = helper::getPrivateKeysSum(privKey1, privKey2).toUpper();
+        ui->lineEdit_VA2_uPK1->setText(privateSum);
+
+        QString privateMult = helper::getPrivateKeysMultiplication(privKey1, privKey2).toUpper();
+        ui->lineEdit_VA2_uPK2->setText(privateMult);
+
+        // Uncompressed WIF
+
+        QString UncompWIFSum = helper::getWIFFromPrivateKey(privateSum);
+        QString UncompWIFMult = helper::getWIFFromPrivateKey(privateMult);
+
+        ui->lineEdit_VA2_uWIF1->setText(UncompWIFSum);
+        ui->lineEdit_VA2_uWIF2->setText(UncompWIFMult);
+
+        // Uncompressed public key
+
+        QString publicSum = helper::getPublicKeysSum(publicKey1, publicKey2, false).toUpper();
+        ui->lineEdit_VA2_uPubK1->setText(publicSum);
+
+        QString publicMult = helper::getPublicPrivateKeysMultiplication(publicKey1, privKey2, false).toUpper();
+        ui->lineEdit_VA2_uPubK2->setText(publicMult);
+
+        // Uncompressed address
+
+
+        QString UncompAdrSum = helper::getWIFFromPublicKey(publicSum);
+        QString UncompAdrMult = helper::getWIFFromPublicKey(publicMult);
+
+        ui->lineEdit_VA2_uA1->setText(UncompAdrSum);
+        ui->lineEdit_VA2_uA2->setText(UncompAdrMult);
+
+
+        // Compressed public key
+        QString publicSumComp = helper::getPublicECDSAKey(privateSum, true);
+        QString publicMultComp = helper::getPublicECDSAKey(privateMult, true);
+
+        ui->lineEdit_VA2_cPubK1->setText(publicSumComp);
+        ui->lineEdit_VA2_cPubK2->setText(publicMultComp);
+
+
+
+    }
+    catch(...) {}
+
+}
+
 void BitcoinTests::updateWIF()
 {
     QString privECDSAKey = ui->lineEdit_PrivECDSAKey->text().trimmed();
     QString prependVersion = QString("80" + privECDSAKey);
     ui->lineEdit_PrependVersion->setText(prependVersion);
 
-    //getQtHexHashSha256FromHexString
     QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
     ui->lineEdit_SHA256HashOf2->setText(stingSHA256HashOf2);
 
@@ -281,7 +405,7 @@ void BitcoinTests::updateWIF()
     ui->lineEdit_First4BitesOf4->setText(stringFirst4BitesOf4);
 
     QString beforeBase58 = prependVersion + first4BitesOf4;
-    ui->lineEdit_6->setText(beforeBase58);
+    ui->lineEdit_Adding5AtTheEndOf2->setText(beforeBase58);
     ui->lineEdit_AfterBase58->setText(helper::encodeBase58(beforeBase58));
 }
 
@@ -295,7 +419,12 @@ void BitcoinTests::slotHashTypeChange(QString)
 
 void BitcoinTests::runCommand(QString command)
 {
-    if (command == "pushButton_BWt_SecPass") {
+    if (command == "pushButton_AllVan_Calc") {
+        updateAllVanityTest();
+    } else if (command == "pushButton_AllVan_Rand") {
+        randAllVanityTest();
+        updateAllVanityTest();
+    } else if (command == "pushButton_BWt_SecPass") {
         updateBrainwallet();
     } else if (command == "pushButton_Priv1_Rand") {
         ui->lineEdit_Priv1_WIF->setText(helper::generateWIF());
@@ -384,12 +513,23 @@ void BitcoinTests::runCommand(QString command)
         ui->lineEdit_VanitySumOfPrivKeys->setText(helper::getPrivateKeysSum(ui->lineEdit_VanityPrivECDSAKey1_S->text(), ui->lineEdit_VanityPrivECDSAKey2_S->text()).toUpper());
         ui->lineEdit_VanityPublicECDSAKey1->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey1_S->text()).toUpper());
         ui->lineEdit_VanityPublicECDSAKey2->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey2_S->text()).toUpper());
+        ui->lineEdit_VanityPublicKeyFromSumOfPrivateKeys->setText(helper::getPublicECDSAKey(ui->lineEdit_VanitySumOfPrivKeys->text()).toUpper());
+        ui->lineEdit_VanityPublicKeyFromSumOfPrivateKeysCorrespondingAddress->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanityPublicKeyFromSumOfPrivateKeys->text()));
+        runCommand("pushButton_CalcSumOfPublicKeys");
     }
     else if ( command == "pushButton_CalcSumOfPublicKeys" ) {
-        QString res = helper::getPublicKeysSum(ui->lineEdit_VanityPublicECDSAKey1->text().trimmed(), ui->lineEdit_VanityPublicECDSAKey2->text().trimmed());
+        ui->lineEdit_VanitySumOfPublicKeys->setText(helper::getPublicKeysSum(ui->lineEdit_VanityPublicECDSAKey1->text().trimmed(), ui->lineEdit_VanityPublicECDSAKey2->text().trimmed()).toUpper());
+        ui->lineEdit_VanitySumOfPublicKeysCorrespondingAddress->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanitySumOfPublicKeys->text()));
     }
     else if ( command == "pushButton_CalcMultiplicationOfPrivKeys" ) {
         ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());
+    }
+    else if (command == "pushButton_CalculatePattern") {
+        auto patterComplexity = cosmyc::Vanity::PatternComplexity(ui->lineEdit_Pattern->text());
+        ui->label_PatternComplexityRes->setText(helper::getStringFromDouble(patterComplexity));
+
+        ui->label_PatternLavishnessRes->setText(helper::getStringFromDouble(cosmyc::Vanity::PatternLavishness(
+                                                    ui->lineEdit_Bountry->text().toULongLong(), patterComplexity)));
     }
     else {
         qDebug() << "Core::buttonsClicked(); Unknown sender()->objectName() == " << sender()->objectName();

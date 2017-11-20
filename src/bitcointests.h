@@ -32,6 +32,9 @@ private:
     void updateWIF2PrivateKey();
     void updateBrainwallet();
 
+    void randAllVanityTest();
+    void updateAllVanityTest();
+
 private slots:
     void buttonsClicked();
     void slotHashTypeChange(QString);

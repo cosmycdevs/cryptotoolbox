@@ -13,26 +13,31 @@ SOURCES += \
     main.cpp \
     libs/bitcoin/base58.cpp \
     libs/bitcoin/crypto/ripemd160.cpp \
-    libs/bitcoin/crypto/sha256.cpp
+    libs/bitcoin/crypto/sha256.cpp \
+    libs/bitcoin/uint256.cpp \
+    libs/bitcoin/utilstrencodings.cpp \
+    libs/bitcoin/arith_uint256.cpp \
+    vanity.cpp
 HEADERS += \
     helper.h \
     bitcointests.h \
     libs/bitcoin/base58.h \
     libs/bitcoin/crypto/ripemd160.h \
-    libs/bitcoin/crypto/sha256.h
+    libs/bitcoin/crypto/sha256.h \
+    libs/bitcoin/uint256.h \
+    libs/bitcoin/tinyformat.h \
+    libs/bitcoin/utilstrencodings.h \
+    libs/bitcoin/arith_uint256.h \
+    vanity.h
 FORMS += \
     bitcointests.ui
 
-###    libs/bitcoin/secp256k1/src/basic-config.h
-
-#INCLUDEPATH += $$PWD/libs
 INCLUDEPATH += $$PWD/libs/bitcoin
-#INCLUDEPATH += $$PWD/libs/bitcoin-core/src/secp256k1/src
 #INCLUDEPATH += c:/boost-1-65-1/include/boost-1_65_1
-
 #LIBS += "-Lc:/boost-1-65-1/lib" -llibboost_locale-mgw53-mt-1_65_1
 
-# from secp256k1/src/basic-config.h
+### from secp256k1/src/basic-config.h
+
 DEFINES -= USE_ASM_X86_64
 DEFINES -= USE_ENDOMORPHISM
 DEFINES -= USE_FIELD_10X26
@@ -53,7 +58,7 @@ DEFINES += "USE_FIELD_10X26=1"
 DEFINES += "USE_SCALAR_8X32=1"
 
 
-# from configure.ac
+### from configure.ac
 #DEFINES -= _CLIENT_VERSION_MAJOR
 #DEFINES -= _CLIENT_VERSION_MINOR
 #DEFINES -= _CLIENT_VERSION_REVISION
@@ -68,5 +73,5 @@ DEFINES += "USE_SCALAR_8X32=1"
 #DEFINES += "_CLIENT_VERSION_IS_RELEASE=false"
 #DEFINES += "_COPYRIGHT_YEAR=2017"
 
-DEFINES -= COVERAGE
-DEFINES += "COVERAGE=1"
+#DEFINES -= COVERAGE
+#DEFINES += "COVERAGE=1"

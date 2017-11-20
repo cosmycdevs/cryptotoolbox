@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     BitcoinTests w;
-    w.init("v1.0.4");
+    w.init("v1.0.5");
     w.show();
 
     return a.exec();
