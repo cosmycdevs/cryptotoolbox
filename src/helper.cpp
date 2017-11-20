@@ -1,9 +1,9 @@
 #include "helper.h"
 
 #include "base58.h"
-#include "secp256k1/src/secp256k1.c"
-#include "crypto/ripemd160.h"
-#include "crypto/sha256.h"
+#include "libs/bitcoin/secp256k1/src/secp256k1.c"
+#include "libs/bitcoin/crypto/ripemd160.h"
+#include "libs/bitcoin/crypto/sha256.h"
 
 std::string helper::convertQStringToStdString(const QString &str)
 {
@@ -15,15 +15,29 @@ QString helper::convertStdStringToQString(const std::string &str)
     return QTextCodec::codecForName("UTF8")->toUnicode(QByteArray(str.c_str()));
 }
 
+QString helper::encodeBase58(const QByteArray   &Data)
+{
+    return QT_STRING(EncodeBase58(
+        reinterpret_cast<const unsigned char *>(Data.data()),
+        reinterpret_cast<const unsigned char *>(Data.data() + Data.size())));
+};
+
 QString helper::encodeBase58(const QString &str)
 {
     QByteArray hexBeforeBase58 = QByteArray::fromHex(str.toUtf8().data());
+
+    return QT_STRING(EncodeBase58(
+        reinterpret_cast<const unsigned char *>(hexBeforeBase58.data()),
+        reinterpret_cast<const unsigned char *>(hexBeforeBase58.data() + hexBeforeBase58.size())));
+
+    /*
     std::vector<unsigned char> beforeBase58Vector;
     for (int i = 0; i < hexBeforeBase58.size(); i++) {
         beforeBase58Vector.push_back(hexBeforeBase58.at(i));
     }
     std::string afterBase58Std = EncodeBase58(beforeBase58Vector);
     return QT_STRING(afterBase58Std);
+    */
 }
 
 QString helper::decodeBase58(const QString &str)
@@ -66,6 +80,69 @@ QString helper::getQtHashSha256(const QString &str)
     return QCryptographicHash::hash(str.toUtf8(), QCryptographicHash::Sha256).toHex();
 }
 
+QByteArray helper::CalcHash(
+        const   void                    *Data,
+        const   size_t                  DataSize,
+        const   CDigest::DIGEST_TYPE    DigestType)
+{
+    CDigest *Digest = CDigest::CreateDigest(DigestType);
+
+    if (Digest == nullptr)
+    {
+        return QByteArray();
+    }
+
+    std::vector<unsigned char>   DigestBuffer;
+    Digest->Update(Data, DataSize);
+    Digest->Finish(DigestBuffer);
+
+    return QByteArray(
+                reinterpret_cast<const char *>(DigestBuffer.data()),
+                DigestBuffer.size());
+};
+
+QByteArray helper::CalcHash(
+        const   QByteArray              &Data,
+        const   CDigest::DIGEST_TYPE    DigestType)
+{
+    return CalcHash(Data.data(), Data.size(), DigestType);
+};
+
+QByteArray helper::CalcHashN(
+        const   void                                *Data,
+        const   size_t                              DataSize,
+        const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes)
+{
+    if ((Data == nullptr) ||
+        (DataSize == 0) ||
+        (DigestTypes.size() == 0))
+    {
+        return QByteArray();
+    }
+
+    QByteArray  CurrentHash;
+    for (size_t k = 0; k < DigestTypes.size(); k++)
+    {
+        if (k == 0)
+        {
+            CurrentHash = CalcHash(Data, DataSize, DigestTypes[k]);
+        }
+        else
+        {
+            CurrentHash = CalcHash(CurrentHash, DigestTypes[k]);
+        }
+    };
+
+    return CurrentHash;
+};
+
+QByteArray helper::CalcHashN(
+        const   QByteArray                          &Data,
+        const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes)
+{
+    return CalcHashN(Data.data(), Data.size(), DigestTypes);
+};
+
 QByteArray helper::encodeRipemd160(const QByteArray &ba)
 {
     unsigned char hash[CRIPEMD160::OUTPUT_SIZE];
@@ -101,8 +178,8 @@ QString helper::getHexHashSha256FromString(const QString &str)
 }
 
 QString helper::getPublicECDSAKey(
-        __in    const   QString &privKeyQString,
-        __in            bool    compressedFlag)
+    const   QString &privKeyQString,
+            bool    compressedFlag)
 {
     QByteArray                  ba = QByteArray::fromHex(privKeyQString.toUtf8().data());
     const unsigned char         *seckey = reinterpret_cast<const unsigned char *>(ba.data());

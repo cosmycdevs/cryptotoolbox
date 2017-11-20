@@ -1,5 +1,6 @@
 #include "bitcointests.h"
 #include "ui_bitcointests.h"
+#include "digest.h"
 
 BitcoinTests::BitcoinTests(QWidget *parent) :
     QMainWindow(parent),
@@ -14,8 +15,6 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     hashTypes << "RIPEMD 160";
 
     ui->comboBox_HashType->addItems(hashTypes);
-//    ui->comboBox_HashType->setCurrentIndex(1);
-//    slotHashTypeChange("");
     connect(ui->comboBox_HashType, SIGNAL(currentTextChanged(QString)),    SLOT(slotHashTypeChange(QString)));
 
     ui->textEdit_DataForHash->setText("00010966776006953D5567439E5E39F86A0D273BEE");
@@ -65,8 +64,10 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_PrivChkSum_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
     connect( ui->pushButton_PrivChkSum_Rand,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
-    connect( ui->pushButton_Priv1_WIF,                 SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
-    connect( ui->pushButton_Priv1_Rand,                SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_Priv1_WIF,                      SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_Priv1_Rand,                     SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pb_Addr_NewKeyPair,                        SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pb_Addr_CalcFast,                          SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 }
 
 BitcoinTests::~BitcoinTests()
@@ -80,6 +81,7 @@ void BitcoinTests::init(QString version)
     ui->lineEdit_Phrase->setText(initialPhrase);
     updatePrivECDSAKey();
     updateWIF();
+    updateAddressTest();
     setWindowTitle("Bitcoin Tests " + version);
 }
 
@@ -192,6 +194,92 @@ void BitcoinTests::updateWIF2PrivateKey()
 
     } catch (...) {}
 }
+
+void BitcoinTests::updateAddressTest()
+{
+    /// Address tests
+    /// @author af (anreyfedorinin)
+    ///
+
+    ui->le_Addr_PrivateKey->setText(ADDRESS_TEST_ECDSA_PRIVATE_KEY);
+    ui->le_Addr_PublicKey->setText(ADDRESS_TEST_ECDSA_PUBLIC_KEY);
+
+    QString PrivateKeyStr = ui->le_Addr_PrivateKey->text().trimmed();
+    QString PublicKeyStr = ui->le_Addr_PublicKey->text().trimmed();
+
+    QByteArray  PrivateKey = QByteArray::fromHex(PrivateKeyStr.toUtf8().data());
+    QByteArray  PublicKey = QByteArray::fromHex(PublicKeyStr.toUtf8().data());
+
+    //  SHA256 hash of PublicKey
+    QByteArray  Step2Data =
+            helper::CalcHash(PublicKey.data(), PublicKey.size(), CDigest::dtSHA256);
+    QString     Step2Str = QString(Step2Data.toHex().data()).toUpper();
+    ui->le_Addr_Step2->setText(Step2Str);
+
+    //  RIPEMD-160 hash of data from Step2
+    QByteArray  Step3Data =
+            helper::CalcHash(Step2Data.data(), Step2Data.size(), CDigest::dtRIPEMD160);
+    QString     Step3Str = QString(Step3Data.toHex().data()).toUpper();
+    ui->le_Addr_Step3->setText(Step3Str);
+
+    //  Adding network bytes to data from Step3
+    QByteArray  Step4Data = Step3Data;
+    Step4Data.insert(0, (char)0x00);
+    QString     Step4Str = QString(Step4Data.toHex().data()).toUpper();
+    ui->le_Addr_Step4->setText(Step4Str);
+
+    //  SHA-256 hash of data from Step4
+    QByteArray  Step5Data =
+            helper::CalcHash(Step4Data.data(), Step4Data.size(), CDigest::dtSHA256);
+    QString     Step5Str = QString(Step5Data.toHex().data()).toUpper();
+    ui->le_Addr_Step5->setText(Step5Str);
+
+    //  SHA-256 hash of data from Step5
+    QByteArray  Step6Data =
+            helper::CalcHash(Step5Data.data(), Step5Data.size(), CDigest::dtSHA256);
+    QString     Step6Str = QString(Step6Data.toHex().data()).toUpper();
+    ui->le_Addr_Step6->setText(Step6Str);
+
+    //  First 4 bytes of data from Step6
+    QByteArray  Step7Data;
+    for (int k = 0; k < 4; k++)
+    {
+        Step7Data.insert(k, Step6Data.at(k));
+    }
+    QString     Step7Str = QString(Step7Data.toHex().data()).toUpper();
+    ui->le_Addr_Step7->setText(Step5Str);
+
+    //  Adding data from Step7 to the data from Step4;
+    QByteArray  Step8Data = Step4Data + Step7Data;
+    QString     Step8Str = QString(Step8Data.toHex().data()).toUpper();
+    ui->le_Addr_Step8->setText(Step8Str);
+
+    //  Base58 encoding of data from Step8
+    QString     Step9Str = helper::encodeBase58(Step8Data);
+    ui->le_Addr_Step9->setText(Step9Str);
+};
+
+void BitcoinTests::calcAddressTestFast()
+{
+    /// Address tests
+    /// @author af (anreyfedorinin)
+    ///
+
+    QString     PublicKeyStr = ui->le_Addr_PublicKey->text().trimmed();
+    QByteArray  PublicKey = QByteArray::fromHex(PublicKeyStr.toUtf8().data());
+
+    QByteArray  Blob1 = helper::CalcHashN(PublicKey, {CDigest::dtSHA256, CDigest::dtRIPEMD160});
+    Blob1.insert(0, (char)0x00);
+
+    QByteArray  Blob2 = helper::CalcHashN(Blob1, {CDigest::dtSHA256, CDigest::dtSHA256});
+
+    for (int k = 0; k < 4; k++)
+    {
+        Blob1 += Blob2.at(k);
+    }
+
+    ui->lbl_Addr_FastResData->setText(helper::encodeBase58(Blob1));
+};
 
 void BitcoinTests::updateWIF()
 {
@@ -321,6 +409,14 @@ void BitcoinTests::runCommand(QString command)
     }
     else if ( command == "pushButton_CalcMultiplicationOfPrivKeys" ) {
         ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());
+    }
+    else if (command == "pb_Addr_NewKeyPair")
+    {
+        updateAddressTest();
+    }
+    else if (command == "pb_Addr_CalcFast")
+    {
+        calcAddressTestFast();
     }
     else {
         qDebug() << "Core::buttonsClicked(); Unknown sender()->objectName() == " << sender()->objectName();

@@ -13,13 +13,23 @@ SOURCES += \
     main.cpp \
     libs/bitcoin/base58.cpp \
     libs/bitcoin/crypto/ripemd160.cpp \
-    libs/bitcoin/crypto/sha256.cpp
+    libs/bitcoin/crypto/sha256.cpp \
+    digest_sha256.cpp \
+    digest_ripemd160.cpp \
+    digest_sha512.cpp \
+    digest.cpp \
+    libs/bitcoin/crypto/sha512.cpp
 HEADERS += \
     helper.h \
     bitcointests.h \
     libs/bitcoin/base58.h \
     libs/bitcoin/crypto/ripemd160.h \
-    libs/bitcoin/crypto/sha256.h
+    libs/bitcoin/crypto/sha256.h \
+    digest.h \
+    digest_sha256.h \
+    digest_ripemd160.h \
+    digest_sha512.h \
+    libs/bitcoin/crypto/sha512.h
 FORMS += \
     bitcointests.ui
 

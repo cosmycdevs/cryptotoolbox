@@ -9,6 +9,7 @@
 
 #include <assert.h>
 #include "secp256k1/include/secp256k1.h"
+#include "digest.h"
 
 #define QT_STRING  helper::convertStdStringToQString
 #define STD_STRING helper::convertQStringToStdString
@@ -18,13 +19,33 @@ namespace helper {
     std::string convertQStringToStdString(const QString &str);
     QString convertStdStringToQString(const std::string &str);
 
+    QString encodeBase58(const QByteArray   &Data);
     QString encodeBase58(const QString &str);
     QString decodeBase58(const QString &str);
 
-    QString     getQtHashSha256(const QString &str);
-    QByteArray  getQtHexHashSha256(const QByteArray &ba);
-    QString     getQtHexHashSha256(const QString &str);
-    QString     getQtHexHashSha256FromHexString(const QString &str);
+    QByteArray CalcHash(
+            const   void                    *Data,
+            const   size_t                  DataSize,
+            const   CDigest::DIGEST_TYPE    DigestType);
+    QByteArray CalcHash(
+            const   QByteArray              &Data,
+            const   CDigest::DIGEST_TYPE    DigestType);
+
+    /// Calculates a hash recursively
+    /// Each next iteration of digesting is being
+    /// done on the result from the prior iteration.
+    QByteArray CalcHashN(
+            const   void                                *Data,
+            const   size_t                              DataSize,
+            const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes);
+    QByteArray CalcHashN(
+            const   QByteArray                          &Data,
+            const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes);
+
+    QString getQtHashSha256(const QString &str);
+    QByteArray getQtHexHashSha256(const QByteArray &ba);
+    QString getQtHexHashSha256(const QString &str);
+    QString getQtHexHashSha256FromHexString(const QString &str);
 
     QByteArray encodeRipemd160(const QByteArray &ba);
     QString getHexHashRipemd160FromHexString(const QString &str);
