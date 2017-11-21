@@ -25,8 +25,9 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     ui->lineEdit_VanityPrivECDSAKey2_S->setText("B18427B169E86DE681A1A62588E1D02AE4A7E83C1B413849989A76282A7B562F");
     runCommand("pushButton_CalcSumOfPrivKeys");
 
-    ui->lineEdit_VanityPrivECDSAKey1_M->setText("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725");
-    ui->lineEdit_VanityPrivECDSAKey2_M->setText("B18427B169E86DE681A1A62588E1D02AE4A7E83C1B413849989A76282A7B562F");
+    ui->lineEdit_VanityPrivECDSAKey1_M->setText("E80F4E9BDA5459EDA5FD088D85C9F77FB7E047A1F3E057FEF1D1573CD5DE3915");
+    ui->lineEdit_VanityPrivECDSAKey2_M->setText("A846985F3F170D4028A7DC301F6D1DFD8466168B7142D40E040D5BED8683B35E");
+
     runCommand("pushButton_CalcMultiplicationOfPrivKeys");
 
     connect( ui->pushButton_HashToLower,                    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
@@ -47,6 +48,8 @@ BitcoinTests::BitcoinTests(QWidget *parent) :
     connect( ui->pushButton_CalcSumOfPublicKeys,            SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
 
     connect( ui->pushButton_CalcMultiplicationOfPrivKeys,   SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+    connect( ui->pushButton_CalcGenerationFromPublicKey,    SIGNAL(clicked(bool)), this, SLOT(buttonsClicked()) );
+
 
 }
 
@@ -188,7 +191,16 @@ void BitcoinTests::runCommand(QString command)
         ui->lineEdit_VanitySumOfPublicKeysCorrespondingAddress->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanitySumOfPublicKeys->text()));
     }
     else if ( command == "pushButton_CalcMultiplicationOfPrivKeys" ) {
+        ui->lineEdit_VanityPublicECDSAKey1_M->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityPrivECDSAKey1_M->text()).toUpper());
+        ui->lineEdit_VanityPrivECDSAKey_M2->setText(ui->lineEdit_VanityPrivECDSAKey2_M->text());
         ui->lineEdit_VanityMultiplicationOfPrivKeys->setText(helper::getPrivateKeysMultiplication(ui->lineEdit_VanityPrivECDSAKey1_M->text().trimmed(), ui->lineEdit_VanityPrivECDSAKey2_M->text().trimmed()).toUpper());
+        ui->lineEdit_VanityPublicKeyFromMultiplicationOfPrivKeys->setText(helper::getPublicECDSAKey(ui->lineEdit_VanityMultiplicationOfPrivKeys->text()).toUpper());
+        ui->lineEdit_CorrAddress1->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanityPublicKeyFromMultiplicationOfPrivKeys->text()));
+        runCommand("pushButton_CalcGenerationFromPublicKey");
+    }
+    else if ( command == "pushButton_CalcGenerationFromPublicKey" ) {
+        ui->lineEdit_VanityPublicKeyFromModdifiedBasePoing_M->setText(helper::getPublicFromModfiedBasePoint(ui->lineEdit_VanityPublicECDSAKey1_M->text(), ui->lineEdit_VanityPrivECDSAKey_M2->text()).toUpper());
+        ui->lineEdit_CorrAddress2->setText(helper::getWIFFromPublicKey(ui->lineEdit_VanityPublicKeyFromModdifiedBasePoing_M->text()));
     }
     else {
         qDebug() << "Core::buttonsClicked(); Unknown sender()->objectName() == " << sender()->objectName();

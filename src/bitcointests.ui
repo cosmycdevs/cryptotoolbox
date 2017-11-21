@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>948</width>
-    <height>529</height>
+    <height>574</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>0</y>
       <width>931</width>
-      <height>471</height>
+      <height>521</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -287,11 +287,11 @@
         <x>10</x>
         <y>10</y>
         <width>911</width>
-        <height>431</height>
+        <height>471</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_VanityAddresses">
        <attribute name="title">
@@ -523,7 +523,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>210</y>
+          <y>220</y>
           <width>881</width>
           <height>20</height>
          </rect>
@@ -534,12 +534,12 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>111</width>
+          <width>251</width>
           <height>20</height>
          </rect>
         </property>
         <property name="text">
-         <string> Private ECDSA Keys:</string>
+         <string>Generate from two private keys:</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButton_CalcMultiplicationOfPrivKeys">
@@ -559,7 +559,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>190</y>
+          <y>200</y>
           <width>141</width>
           <height>20</height>
          </rect>
@@ -586,6 +586,182 @@
           <width>881</width>
           <height>20</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicECDSAKey1_M">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>120</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPrivECDSAKeys_M_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>251</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Generate from two private keys:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPrivECDSAKey_M2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>150</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPubKeyFromModBD_M">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>350</y>
+          <width>241</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Public key generated from a modified base point:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_CalcGenerationFromPublicKey">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>180</y>
+          <width>81</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Send</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicKeyFromModdifiedBasePoing_M">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>370</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityPublicKeyFromMultiplicationOfPrivKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>240</y>
+          <width>241</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Public key from the multiplication of private keys:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_VanityPublicKeyFromMultiplicationOfPrivKeys">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>260</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivateKeyMult">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>174</y>
+          <width>191</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Private key multiplication</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityCorrAddress2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>390</y>
+          <width>241</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Corresponding address:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_CorrAddress2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>410</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_CorrAddress1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>300</y>
+          <width>881</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_VanityCorrAddress1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>280</y>
+          <width>241</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Corresponding address:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_PrivateKeyMult_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>330</y>
+          <width>191</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Generation from public key</string>
         </property>
        </widget>
       </widget>

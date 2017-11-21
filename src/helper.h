@@ -45,6 +45,10 @@ namespace helper {
 
     QString getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag = false);
     QString getWIFFromPublicKey(const QString &key);
+
+    void updateContextWithBasePointFromPubkey(secp256k1_context* orig_ctx, const secp256k1_pubkey &pubkey);
+    QString getPublicFromModfiedBasePoint(const QString &publicKey, const QString &privateKey);
+
 }
 
 #endif // HELPER_H
