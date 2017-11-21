@@ -226,12 +226,15 @@ QString helper::getPublicPrivateKeysMultiplication(const QString &publicKey, con
     return QString(QByteArray(reinterpret_cast<const char*>(result), clen).toHex());
 }
 
-QString helper::getWIFFromPublicKey(const QString &pubkey)
+QString helper::getWIFFromPublicKey(const QString &pubkey, QString MainNet)
 {
     QByteArray ba = QByteArray::fromHex(pubkey.toUtf8().data());
+    QByteArray ba2 = QByteArray::fromHex(MainNet.toUtf8().data());
     QByteArray sha256FormHexPubkey = encodeSha256(ba);
     QByteArray ripemd160OfSha256 = encodeRipemd160(sha256FormHexPubkey);
-    ripemd160OfSha256.insert(0, QChar(0x00));
+    //ripemd160OfSha256.insert(0, QChar(0x00));
+    assert(ba2.length() == 1);
+    ripemd160OfSha256.insert(0, ba2[0]);
     QByteArray sha256FromRipemd160 = encodeSha256(ripemd160OfSha256);
     QByteArray sha256FromSha256 = encodeSha256(sha256FromRipemd160);
 
@@ -245,9 +248,14 @@ QString helper::getWIFFromPublicKey(const QString &pubkey)
 
 }
 
-QString helper::getWIFFromPrivateKey(const QString &key)
+QString helper::getWIFFromPrivateKey(const QString &key, QString prefix)
 {
-    QString prependVersion = QString("80" + key);
+    if (prefix.length() == 1)
+        prefix = "0" + prefix;
+    assert(prefix.length() == 2);
+
+    //QString prependVersion = QString("80" + key);
+    QString prependVersion = QString(prefix + key);
 
     QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
 
@@ -295,6 +303,8 @@ QString helper::generateWIF()
     QString beforeBase58 = prependVersion + first4BitesOf4;
     return helper::encodeBase58(beforeBase58);
 }
+
+
 
 /*bool helper::testWIF(char *WIF) no need yet
 {

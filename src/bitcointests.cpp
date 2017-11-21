@@ -314,6 +314,21 @@ void BitcoinTests::updateAllVanityTest()
     ui->lineEdit_VA2_cPubK1->setText("");
     ui->lineEdit_VA2_cPubK2->setText("");
 
+    ui->lineEdit_VA_A1->setText("");
+    ui->lineEdit_VA_A2->setText("");
+
+    ui->lineEdit_VA_cA1->setText("");
+    ui->lineEdit_VA_cA2->setText("");
+
+    ui->lineEdit_VA2_cA1->setText("");
+    ui->lineEdit_VA2_cA2->setText("");
+
+    ui->lineEdit_VA2_cPrivK1->setText("");
+    ui->lineEdit_VA2_cPrivK2->setText("");
+
+    ui->lineEdit_VA2_cWIF1->setText("");
+    ui->lineEdit_VA2_cWIF2->setText("");
+
     try {
 
 
@@ -321,18 +336,32 @@ void BitcoinTests::updateAllVanityTest()
         QString privKey2 = ui->lineEdit_VA_priv2->text();
 
         // Uncompressed public key
-
         QString publicKey1 = helper::getPublicECDSAKey(privKey1).toUpper();
         QString publicKey2 = helper::getPublicECDSAKey(privKey2).toUpper();
         ui->lineEdit_VA_uncPK1->setText(publicKey1);
         ui->lineEdit_VA_uncPK2->setText(publicKey2);
 
-        // Compressed public key
+        QString NetByte = ui->lineEdit_VA_N1->text();
+        QString Prefix = ui->lineEdit_VA_N2->text();
 
+        // Uncompressed address
+        QString adress1 = helper::getWIFFromPublicKey(publicKey1, NetByte);
+        ui->lineEdit_VA_A1->setText(adress1);
+        QString adress2 = helper::getWIFFromPublicKey(publicKey2, NetByte);
+        ui->lineEdit_VA_A2->setText(adress2);
+
+
+        // Compressed public key
         QString publicKeyComp1 = helper::getPublicECDSAKey(privKey1, true).toUpper();
         QString publicKeyComp2 = helper::getPublicECDSAKey(privKey2, true).toUpper();
         ui->lineEdit_VA_cPK1->setText(publicKeyComp1);
         ui->lineEdit_VA_cPK2->setText(publicKeyComp1);
+
+        // Compressed address
+        QString adress1c = helper::getWIFFromPublicKey(publicKeyComp1, NetByte);
+        ui->lineEdit_VA_cA1->setText(adress1c);
+        QString adress2c = helper::getWIFFromPublicKey(publicKeyComp2, NetByte);
+        ui->lineEdit_VA_cA2->setText(adress2c);
 
 
         // Sum and Mult
@@ -371,6 +400,33 @@ void BitcoinTests::updateAllVanityTest()
         ui->lineEdit_VA2_uA2->setText(UncompAdrMult);
 
 
+        // Compressed private key
+        //PrivateKeyToWIFWithPrefixByte
+
+        QString privKeySum = "CA65722CD418ED28EC369E36CFE3B7F3CC1CD035BFBF6469CE759FCA30AD6D5401";
+        QString privKeyMult = "936B522B34313FC011FAB0E776EB52D47ADFA98F02BF2B70A248B849F3CD146501";
+
+        ui->lineEdit_VA2_cPrivK1->setText(privKeySum);
+        ui->lineEdit_VA2_cPrivK2->setText(privKeyMult);
+
+
+
+
+
+
+
+        // Compressed WIF
+                //PrivateKeyToWIFWithPrefixByte
+        // https://bitcoin.stackexchange.com/questions/57143/how-to-generate-secret-key-prefix
+
+        QString compWIF1 = helper::getWIFFromPrivateKey(privKeySum, Prefix);
+        ui->lineEdit_VA2_cWIF1->setText(compWIF1);
+        QString compWIF2 = helper::getWIFFromPrivateKey(privKeyMult, Prefix);
+        ui->lineEdit_VA2_cWIF2->setText(compWIF2);
+
+
+
+
         // Compressed public key
         QString publicSumComp = helper::getPublicECDSAKey(privateSum, true);
         QString publicMultComp = helper::getPublicECDSAKey(privateMult, true);
@@ -378,6 +434,13 @@ void BitcoinTests::updateAllVanityTest()
         ui->lineEdit_VA2_cPubK1->setText(publicSumComp);
         ui->lineEdit_VA2_cPubK2->setText(publicMultComp);
 
+
+
+        // Compressed address
+        QString adressSumComp = helper::getWIFFromPublicKey(publicSumComp, NetByte);
+        ui->lineEdit_VA2_cA1->setText(adressSumComp);
+        QString adressMultComp = helper::getWIFFromPublicKey(publicMultComp, NetByte);
+        ui->lineEdit_VA2_cA2->setText(adressMultComp);
 
 
     }
