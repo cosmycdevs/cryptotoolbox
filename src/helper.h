@@ -56,6 +56,9 @@ namespace helper {
     QString makeWIFCheckSum(QString WIF);
 
     QString getStringFromDouble(double val);
+
+    void updateContextWithBasePointFromPubkey(secp256k1_context* orig_ctx, const secp256k1_pubkey &pubkey);
+    QString getPublicFromModfiedBasePoint(const QString &publicKey, const QString &privateKey);
 }
 
 #endif // HELPER_H
