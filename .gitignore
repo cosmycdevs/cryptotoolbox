@@ -1,7 +1,8 @@
-*.user
+/.user
 *~
-*.exe
-*.obj
-*.lib
-*.pdb
-build-cryptotoolbox-Desktop_Qt_*
+/*.exe
+/*.obj
+/*.lib
+/*.pdb
+/*.bak
+/build-cryptotoolbox-Desktop_Qt_*

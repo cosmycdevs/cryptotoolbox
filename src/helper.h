@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <assert.h>
+
 #include "secp256k1/include/secp256k1.h"
 #include "digest.h"
 
@@ -63,9 +64,20 @@ namespace helper {
     QString getPrivateKeysMultiplication(const QString &key1, const QString &key2);
 
     QString getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag = false);
+    QString getPublicPrivateKeysMultiplication(const QString &publicKey, const QString &privateKey, bool compressedFlag = false);
+
+    QString getWIFFromPublicKey(const QString &key, QString MainNet = "0");
+    QString getWIFFromPrivateKey(const QString &key, QString prefix = "80");
 
     QString GetRandomString();
     QString generateWIF();
+    //bool testWIF(char *);  no need yet
+    QString makeWIFCheckSum(QString WIF);
+
+    QString getStringFromDouble(double val);
+
+    void updateContextWithBasePointFromPubkey(secp256k1_context* orig_ctx, const secp256k1_pubkey &pubkey);
+    QString getPublicFromModfiedBasePoint(const QString &publicKey, const QString &privateKey);
 }
 
 #endif // HELPER_H

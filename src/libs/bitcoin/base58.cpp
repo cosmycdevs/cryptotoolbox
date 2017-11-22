@@ -106,3 +106,22 @@ bool DecodeBase58(const std::string& str, std::vector<unsigned char>& vchRet)
 {
     return DecodeBase58(str.c_str(), vchRet);
 }
+
+/*bool Inc58(char *in, size_t lenght, size_t digit)
+{
+    if (digit >= 6)
+        return false;
+
+    char *it = in + lenght - digit - 1;
+
+    if (*it == 'z') {
+        *it = '1';
+        Inc58(in, lenght, digit + 1);
+    }
+    else {
+        const char* ch = strchr(pszBase58, *it);
+        *it = *(++ch);
+    }
+
+    return true;
+}*/

@@ -1,9 +1,14 @@
 #include "helper.h"
 
+#include <sstream>
+#include <iomanip>
+
+#include "digest.h"
 #include "base58.h"
-#include "libs/bitcoin/secp256k1/src/secp256k1.c"
-#include "libs/bitcoin/crypto/ripemd160.h"
-#include "libs/bitcoin/crypto/sha256.h"
+#include "crypto/ripemd160.h"
+#include "crypto/sha256.h"
+#include "secp256k1/src/secp256k1.c"
+
 
 std::string helper::convertQStringToStdString(const QString &str)
 {
@@ -25,20 +30,10 @@ QString helper::encodeBase58(const QByteArray   &Data)
 QString helper::encodeBase58(const QString &str)
 {
     QByteArray hexBeforeBase58 = QByteArray::fromHex(str.toUtf8().data());
-
     return QT_STRING(EncodeBase58(
         reinterpret_cast<const unsigned char *>(hexBeforeBase58.data()),
         reinterpret_cast<const unsigned char *>(hexBeforeBase58.data() + hexBeforeBase58.size())));
-
-    /*
-    std::vector<unsigned char> beforeBase58Vector;
-    for (int i = 0; i < hexBeforeBase58.size(); i++) {
-        beforeBase58Vector.push_back(hexBeforeBase58.at(i));
-    }
-    std::string afterBase58Std = EncodeBase58(beforeBase58Vector);
-    return QT_STRING(afterBase58Std);
-    */
-}
+};
 
 QString helper::decodeBase58(const QString &str)
 {
@@ -248,7 +243,7 @@ int helper::qt_secp256k1_ec_privkey_tweak_mul(const secp256k1_context* ctx, unsi
 
 QString helper::getPrivateKeysMultiplication(const QString &key1, const QString &key2)
 {
-    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN); // | SECP256K1_CONTEXT_VERIFY
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
     QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
     unsigned char *result = reinterpret_cast<unsigned char *>(ba1.data());
@@ -264,51 +259,114 @@ QString helper::getPrivateKeysMultiplication(const QString &key1, const QString 
 
 QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag)
 {
-    secp256k1_context           *Context = nullptr;
-    size_t                      clen = compressedFlag ? 33 : 65;
-    QByteArray                  ba1;
-    QByteArray                  ba2;
-    secp256k1_pubkey            pubkey;
-    int                         ret;
-    std::vector<unsigned char>  ResultBuffer;
+    size_t clen = compressedFlag ? 33 : 65;
+    int ret = 0;
 
-    Context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-    ba1 = QByteArray::fromHex(key1.toUtf8().data());
-
-    ret = secp256k1_ec_pubkey_parse(
-                Context,
-                &pubkey,
-                reinterpret_cast<const unsigned char *>(ba1.data()),
-                clen);
+    QByteArray key1ba = QByteArray::fromHex(key1.toUtf8().data());
+    const unsigned char *key1cuc = reinterpret_cast<const unsigned char *>(key1ba.data());
+    secp256k1_pubkey pubkey1;
+    ret = secp256k1_ec_pubkey_parse(ctx, &pubkey1, key1cuc, clen);
     assert(ret);
 
-    ba2 = QByteArray::fromHex(key2.toUtf8().data());
-
-    ret = secp256k1_ec_pubkey_tweak_add(
-                Context,
-                &pubkey,
-                reinterpret_cast<const unsigned char *>(ba2.data()));
+    QByteArray key2ba = QByteArray::fromHex(key2.toUtf8().data());
+    const unsigned char *key2cuc = reinterpret_cast<const unsigned char *>(key2ba.data());
+    secp256k1_pubkey pubkey2;
+    ret = secp256k1_ec_pubkey_parse(ctx, &pubkey2, key2cuc, clen);
     assert(ret);
 
-    ResultBuffer.resize(clen, 0);
+    const secp256k1_pubkey *pubkeys[2];
+    pubkeys[0] = &pubkey1;
+    pubkeys[1] = &pubkey2;
 
-    ret = secp256k1_ec_pubkey_serialize(
-            Context,
-            &ResultBuffer[0],
-            &clen,
-            &pubkey,
-            compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
-
+    secp256k1_pubkey pubkey;
+    ret = secp256k1_ec_pubkey_combine(ctx, &pubkey, pubkeys, 2);
     assert(ret);
 
-    return "";
+    unsigned char result[clen];
+    ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+    assert(ret);
+
+    return QString(QByteArray(reinterpret_cast<const char*>(result), clen).toHex());
 }
+
+QString helper::getPublicPrivateKeysMultiplication(const QString &publicKey, const QString &privateKey, bool compressedFlag)
+{
+    size_t clen = compressedFlag ? 33 : 65;
+    int ret = 0;
+
+    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+    QByteArray key1ba = QByteArray::fromHex(publicKey.toUtf8().data());
+    const unsigned char *key1cuc = reinterpret_cast<const unsigned char *>(key1ba.data());
+    secp256k1_pubkey pubkey1;
+    ret = secp256k1_ec_pubkey_parse(ctx, &pubkey1, key1cuc, clen);
+    assert(ret);
+
+    QByteArray ba2 = QByteArray::fromHex(privateKey.toUtf8().data());
+    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+
+
+    ret = secp256k1_ec_pubkey_tweak_mul(ctx, &pubkey1, tweak);
+    assert(ret);
+
+
+    unsigned char result[clen];
+    ret = secp256k1_ec_pubkey_serialize(ctx, result, &clen, &pubkey1, compressedFlag ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED);
+    assert(ret);
+
+    return QString(QByteArray(reinterpret_cast<const char*>(result), clen).toHex());
+}
+
+QString helper::getWIFFromPublicKey(const QString &pubkey, QString MainNet)
+{
+    QByteArray ba = QByteArray::fromHex(pubkey.toUtf8().data());
+    QByteArray ba2 = QByteArray::fromHex(MainNet.toUtf8().data());
+    QByteArray sha256FormHexPubkey = encodeSha256(ba);
+    QByteArray ripemd160OfSha256 = encodeRipemd160(sha256FormHexPubkey);
+    //ripemd160OfSha256.insert(0, QChar(0x00));
+    assert(ba2.length() == 1);
+    ripemd160OfSha256.insert(0, ba2[0]);
+    QByteArray sha256FromRipemd160 = encodeSha256(ripemd160OfSha256);
+    QByteArray sha256FromSha256 = encodeSha256(sha256FromRipemd160);
+
+    for (int i = 0; i < 4; i++) {
+        ripemd160OfSha256.append(sha256FromSha256.at(i));
+    }
+
+    return encodeBase58(ripemd160OfSha256);
+};
+
+QString helper::getWIFFromPrivateKey(const QString &key, QString prefix)
+{
+    if (prefix.length() == 1)
+        prefix = "0" + prefix;
+    assert(prefix.length() == 2);
+
+    //QString prependVersion = QString("80" + key);
+    QString prependVersion = QString(prefix + key);
+
+    QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
+
+    QString stingSHA256HashOf3 = helper::getHexHashSha256FromHexString(stingSHA256HashOf2).toUpper();
+
+    QByteArray first4BitesOf4;
+    for (int i = 0; i < 8; i++) {
+        first4BitesOf4.append(stingSHA256HashOf3.at(i));
+    }
+    QString stringFirst4BitesOf4 = QString(first4BitesOf4);
+
+    QString beforeBase58 = prependVersion + first4BitesOf4;
+
+    return helper::encodeBase58(beforeBase58);
+}
+
 
 QString helper::GetRandomString()
 {
    const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-   const int randomStringLength = 255; // assuming you want random strings of 12 characters
+   const int randomStringLength = 255; // assuming you want random strings of 255 characters
 
    QString randomString;
    for(int i=0; i<randomStringLength; ++i)
@@ -334,4 +392,207 @@ QString helper::generateWIF()
     QString stringFirst4BitesOf4 = QString(first4BitesOf4);
     QString beforeBase58 = prependVersion + first4BitesOf4;
     return helper::encodeBase58(beforeBase58);
+}
+
+QString helper::makeWIFCheckSum(QString WIF)
+{
+    QString WIFWork = helper::decodeBase58(QString(WIF));
+    WIFWork.chop(4 * 2);
+
+    QString WIFWorkCopy = WIFWork;
+    WIFWorkCopy = helper::getHexHashSha256FromHexString(WIFWorkCopy).toUpper();
+    WIFWorkCopy = helper::getHexHashSha256FromHexString(WIFWorkCopy).toUpper();
+
+    QByteArray first4BitesOf4;
+    for (int i = 0; i < 4 * 2; ++i)
+        first4BitesOf4.append(WIFWorkCopy.at(i));
+
+    WIFWork += QString(first4BitesOf4);
+
+    return helper::encodeBase58(WIFWork);
+}
+
+QString helper::getStringFromDouble(double val)
+{
+    std::stringstream ss;
+    ss << std::setprecision( 15 );
+    ss << val;
+
+    return QString(ss.str().c_str());
+}
+void helper::updateContextWithBasePointFromPubkey(secp256k1_context* orig_ctx, const secp256k1_pubkey &pubkey)
+{
+    secp256k1_ge modified_point;
+    int ret = secp256k1_pubkey_load(orig_ctx, &modified_point, &pubkey);
+    assert(ret);
+
+    secp256k1_ecmult_gen_context *ctx   = &(orig_ctx->ecmult_gen_ctx);
+    const secp256k1_callback* cb        = &(orig_ctx->error_callback);
+
+// rewrite function static void secp256k1_ecmult_gen_context_build(secp256k1_ecmult_gen_context *ctx, const secp256k1_callback* cb)
+// from ecmult_gen_impl.h modified_point => secp256k1_ge_const_g
+
+#ifndef USE_ECMULT_STATIC_PRECOMPUTATION
+    secp256k1_ge prec[1024];
+    secp256k1_gej gj;
+    secp256k1_gej nums_gej;
+    int i, j;
+#endif
+
+//    if (ctx->prec != NULL) {
+//        return;
+//    }
+#ifndef USE_ECMULT_STATIC_PRECOMPUTATION
+    ctx->prec = (secp256k1_ge_storage (*)[64][16])checked_malloc(cb, sizeof(*ctx->prec));
+
+    /* get the generator */
+    //secp256k1_gej_set_ge(&gj, &secp256k1_ge_const_g);
+    secp256k1_gej_set_ge(&gj, &modified_point);
+
+    /* Construct a group element with no known corresponding scalar (nothing up my sleeve). */
+    {
+        static const unsigned char nums_b32[33] = "The scalar for this x is unknown";
+        secp256k1_fe nums_x;
+        secp256k1_ge nums_ge;
+        int r;
+        r = secp256k1_fe_set_b32(&nums_x, nums_b32);
+        (void)r;
+        VERIFY_CHECK(r);
+        r = secp256k1_ge_set_xo_var(&nums_ge, &nums_x, 0);
+        (void)r;
+        VERIFY_CHECK(r);
+        secp256k1_gej_set_ge(&nums_gej, &nums_ge);
+        /* Add G to make the bits in x uniformly distributed. */
+        //secp256k1_gej_add_ge_var(&nums_gej, &nums_gej, &secp256k1_ge_const_g, NULL);
+        secp256k1_gej_add_ge_var(&nums_gej, &nums_gej, &modified_point, NULL);
+
+    }
+
+    /* compute prec. */
+    {
+        secp256k1_gej precj[1024]; /* Jacobian versions of prec. */
+        secp256k1_gej gbase;
+        secp256k1_gej numsbase;
+        gbase = gj; /* 16^j * G */
+        numsbase = nums_gej; /* 2^j * nums. */
+        for (j = 0; j < 64; j++) {
+            /* Set precj[j*16 .. j*16+15] to (numsbase, numsbase + gbase, ..., numsbase + 15*gbase). */
+            precj[j*16] = numsbase;
+            for (i = 1; i < 16; i++) {
+                secp256k1_gej_add_var(&precj[j*16 + i], &precj[j*16 + i - 1], &gbase, NULL);
+            }
+            /* Multiply gbase by 16. */
+            for (i = 0; i < 4; i++) {
+                secp256k1_gej_double_var(&gbase, &gbase, NULL);
+            }
+            /* Multiply numbase by 2. */
+            secp256k1_gej_double_var(&numsbase, &numsbase, NULL);
+            if (j == 62) {
+                /* In the last iteration, numsbase is (1 - 2^j) * nums instead. */
+                secp256k1_gej_neg(&numsbase, &numsbase);
+                secp256k1_gej_add_var(&numsbase, &numsbase, &nums_gej, NULL);
+            }
+        }
+        secp256k1_ge_set_all_gej_var(prec, precj, 1024, cb);
+    }
+    for (j = 0; j < 64; j++) {
+        for (i = 0; i < 16; i++) {
+            secp256k1_ge_to_storage(&(*ctx->prec)[j][i], &prec[j*16 + i]);
+        }
+    }
+#else
+    (void)cb;
+    ctx->prec = (secp256k1_ge_storage (*)[64][16])secp256k1_ecmult_static_context;
+#endif
+    //secp256k1_ecmult_gen_blind(ctx, NULL);
+
+////
+    // rewrite static void secp256k1_ecmult_gen_blind(secp256k1_ecmult_gen_context *ctx, const unsigned char *seed32) {
+    // from ecmult_gen_impl.h modified_point => secp256k1_ge_const_g
+    const unsigned char *seed32 = NULL;
+
+    secp256k1_scalar b;
+    secp256k1_gej gb;
+    secp256k1_fe s;
+    unsigned char nonce32[32];
+    secp256k1_rfc6979_hmac_sha256_t rng;
+    int retry;
+    unsigned char keydata[64] = {0};
+    if (seed32 == NULL) {
+        /* When seed is NULL, reset the initial point and blinding value. */
+        //secp256k1_gej_set_ge(&ctx->initial, &secp256k1_ge_const_g);
+        secp256k1_gej_set_ge(&ctx->initial, &modified_point);
+        secp256k1_gej_neg(&ctx->initial, &ctx->initial);
+        secp256k1_scalar_set_int(&ctx->blind, 1);
+    }
+    /* The prior blinding value (if not reset) is chained forward by including it in the hash. */
+    secp256k1_scalar_get_b32(nonce32, &ctx->blind);
+    /** Using a CSPRNG allows a failure free interface, avoids needing large amounts of random data,
+     *   and guards against weak or adversarial seeds.  This is a simpler and safer interface than
+     *   asking the caller for blinding values directly and expecting them to retry on failure.
+     */
+    memcpy(keydata, nonce32, 32);
+    if (seed32 != NULL) {
+        memcpy(keydata + 32, seed32, 32);
+    }
+    secp256k1_rfc6979_hmac_sha256_initialize(&rng, keydata, seed32 ? 64 : 32);
+    memset(keydata, 0, sizeof(keydata));
+    /* Retry for out of range results to achieve uniformity. */
+    do {
+        secp256k1_rfc6979_hmac_sha256_generate(&rng, nonce32, 32);
+        retry = !secp256k1_fe_set_b32(&s, nonce32);
+        retry |= secp256k1_fe_is_zero(&s);
+    } while (retry); /* This branch true is cryptographically unreachable. Requires sha256_hmac output > Fp. */
+    /* Randomize the projection to defend against multiplier sidechannels. */
+    secp256k1_gej_rescale(&ctx->initial, &s);
+    secp256k1_fe_clear(&s);
+    do {
+        secp256k1_rfc6979_hmac_sha256_generate(&rng, nonce32, 32);
+        secp256k1_scalar_set_b32(&b, nonce32, &retry);
+        /* A blinding value of 0 works, but would undermine the projection hardening. */
+        retry |= secp256k1_scalar_is_zero(&b);
+    } while (retry); /* This branch true is cryptographically unreachable. Requires sha256_hmac output > order. */
+    secp256k1_rfc6979_hmac_sha256_finalize(&rng);
+    memset(nonce32, 0, 32);
+    secp256k1_ecmult_gen(ctx, &gb, &b);
+    secp256k1_scalar_negate(&b, &b);
+    ctx->blind = b;
+    ctx->initial = gb;
+    secp256k1_scalar_clear(&b);
+    secp256k1_gej_clear(&gb);
+
+}
+
+QString helper::getPublicFromModfiedBasePoint(const QString &publicKey, const QString &privateKey)
+{
+    int ret = 0;
+    size_t clen = 65;
+
+    secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+    QByteArray publicKeyBa = QByteArray::fromHex(publicKey.toUtf8().data());
+    const unsigned char *publicKeyCuc = reinterpret_cast<const unsigned char *>(publicKeyBa.data());
+
+    secp256k1_pubkey pubkeyOfModifiedPoint;
+    ret = secp256k1_ec_pubkey_parse(ctx, &pubkeyOfModifiedPoint, publicKeyCuc, clen);
+    assert(ret);
+
+    updateContextWithBasePointFromPubkey(ctx, pubkeyOfModifiedPoint);
+
+    QByteArray privKeyBa = QByteArray::fromHex(privateKey.toUtf8().data());
+    const unsigned char *seckey = reinterpret_cast<const unsigned char *>(privKeyBa.data());
+
+    secp256k1_pubkey pubkeyFromModifiedPoint;
+    ret = secp256k1_ec_pubkey_create(ctx, &pubkeyFromModifiedPoint, seckey);
+    assert(ret);
+
+    unsigned char resultFromModifiedPoint[clen];
+    ret = secp256k1_ec_pubkey_serialize(ctx, resultFromModifiedPoint, &clen, &pubkeyFromModifiedPoint, SECP256K1_EC_UNCOMPRESSED);
+    assert(ret);
+
+//    QByteArray pubKeyFromModifiedPoint = QByteArray(reinterpret_cast<const char*>(resultFromModifiedPoint), clen);
+//    QString pubFromModifiedPoint = QString(pubKeyFromModifiedPoint.toHex());
+//    qDebug() << "pubFromModifiedPoint == " << pubFromModifiedPoint;
+
+    return QString(QByteArray(reinterpret_cast<const char*>(resultFromModifiedPoint), clen).toHex());
 }

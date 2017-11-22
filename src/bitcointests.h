@@ -33,8 +33,13 @@ private:
     void updatePoB();
     void updatePrivChkSum();
     void updateWIF2PrivateKey();
-    void updateAddressTest();
+    void updateBrainwallet();
+
+    void updateAddressTest(bool GenerateNewKeys = false);
     void calcAddressTestFast();
+
+    void randAllVanityTest();
+    void updateAllVanityTest();
 
 private slots:
     void buttonsClicked();
