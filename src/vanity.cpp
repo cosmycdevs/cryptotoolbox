@@ -3,7 +3,7 @@
 #include "vanity.h"
 
 
-const double cosmyc::Vanity::PatternComplexity(const QString pattern)
+const double cosmyc::Vanity::PatternComplexity(const QString &pattern)
 {
     double res = 1;
     int index = 0;

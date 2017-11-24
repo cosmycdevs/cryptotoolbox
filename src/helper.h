@@ -48,7 +48,7 @@ namespace helper {
     QString getQtHexHashSha256(const QString &str);
     QString getQtHexHashSha256FromHexString(const QString &str);
 
-    QByteArray encodeRipemd160(const QByteArray &ba);
+    //QByteArray encodeRipemd160(const QByteArray &ba);
     QString getHexHashRipemd160FromHexString(const QString &str);
     QString getHexHashRipemd160FromString(const QString &str);
 

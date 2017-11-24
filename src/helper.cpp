@@ -9,7 +9,6 @@
 #include "crypto/sha256.h"
 #include "secp256k1/src/secp256k1.c"
 
-
 std::string helper::convertQStringToStdString(const QString &str)
 {
     return str.toLocal8Bit().constData();
@@ -42,12 +41,15 @@ QString helper::decodeBase58(const QString &str)
 
     std::vector<unsigned char> vchVector;
     if (!DecodeBase58(buffer, vchVector))
+    {
         return "";
+    }
 
     static const unsigned char  hexAlphas[] = "0123456789ABCDEF";
 
     QString Result = "";
-    for (auto it : vchVector) {
+    for (auto it : vchVector)
+    {
         Result += hexAlphas[(it & 0xF0) >> 4];
         Result += hexAlphas[it & 0xF];
     }
@@ -138,28 +140,30 @@ QByteArray helper::CalcHashN(
     return CalcHashN(Data.data(), Data.size(), DigestTypes);
 };
 
+/*
 QByteArray helper::encodeRipemd160(const QByteArray &ba)
 {
     unsigned char hash[CRIPEMD160::OUTPUT_SIZE];
     CRIPEMD160().Write(reinterpret_cast<const unsigned char *>(ba.data()), ba.size()).Finalize(hash);
     return QByteArray(reinterpret_cast<const char*>(hash), CRIPEMD160::OUTPUT_SIZE);
 }
+*/
 
 QString helper::getHexHashRipemd160FromHexString(const QString &str)
 {
-    return encodeRipemd160(QByteArray::fromHex(str.toUtf8().data())).toHex();
+    return CalcHash(
+        QByteArray::fromHex(str.toUtf8().data()),
+        CDigest::dtRIPEMD160).toHex();
 }
 
 QString helper::getHexHashRipemd160FromString(const QString &str)
 {
-    return encodeRipemd160(str.toUtf8().data()).toHex();
+    return CalcHash(str.toUtf8(), CDigest::dtRIPEMD160).toHex();
 }
 
 QByteArray helper::encodeSha256(const QByteArray &ba)
 {
-    unsigned char hash[CSHA256::OUTPUT_SIZE];
-    CSHA256().Write(reinterpret_cast<const unsigned char *>(ba.data()), ba.size()).Finalize(hash);
-    return QByteArray(reinterpret_cast<const char*>(hash), CSHA256::OUTPUT_SIZE);
+    return CalcHash(ba, CDigest::dtSHA256);
 }
 
 QString helper::getHexHashSha256FromHexString(const QString &str)
@@ -229,9 +233,6 @@ int helper::qt_secp256k1_ec_privkey_tweak_mul(const secp256k1_context* ctx, unsi
     secp256k1_scalar_set_b32(&factor, tweak, &overflow);
     secp256k1_scalar_set_b32(&sec, seckey, NULL);
     ret = !overflow && secp256k1_eckey_privkey_tweak_mul(&sec, &factor);
-    //memset(seckey, 0, 32);
-    //seckey = new unsigned char[32]();
-    //seckey = calloc(32, sizeof(unsigned char));
     if (ret) {
         secp256k1_scalar_get_b32(seckey, &sec);
     }
@@ -323,83 +324,93 @@ QString helper::getWIFFromPublicKey(const QString &pubkey, QString MainNet)
 {
     QByteArray ba = QByteArray::fromHex(pubkey.toUtf8().data());
     QByteArray ba2 = QByteArray::fromHex(MainNet.toUtf8().data());
-    QByteArray sha256FormHexPubkey = encodeSha256(ba);
-    QByteArray ripemd160OfSha256 = encodeRipemd160(sha256FormHexPubkey);
-    //ripemd160OfSha256.insert(0, QChar(0x00));
+
+    QByteArray sha256FormHexPubkey = helper::CalcHash(ba, CDigest::dtSHA256);
+    QByteArray ripemd160OfSha256 = helper::CalcHash(sha256FormHexPubkey, CDigest::dtRIPEMD160);
+
     assert(ba2.length() == 1);
     ripemd160OfSha256.insert(0, ba2[0]);
-    QByteArray sha256FromRipemd160 = encodeSha256(ripemd160OfSha256);
-    QByteArray sha256FromSha256 = encodeSha256(sha256FromRipemd160);
 
-    for (int i = 0; i < 4; i++) {
+    QByteArray sha256FromRipemd160 = helper::CalcHash(ripemd160OfSha256, CDigest::dtSHA256);
+    QByteArray sha256FromSha256 = helper::CalcHash(sha256FromRipemd160, CDigest::dtSHA256);
+
+    for (int i = 0; i < 4; i++)
+    {
         ripemd160OfSha256.append(sha256FromSha256.at(i));
     }
 
-    return encodeBase58(ripemd160OfSha256);
+    return helper::encodeBase58(ripemd160OfSha256);
 };
 
 QString helper::getWIFFromPrivateKey(const QString &key, QString prefix)
 {
     if (prefix.length() == 1)
+    {
         prefix = "0" + prefix;
+    }
+
     assert(prefix.length() == 2);
 
-    //QString prependVersion = QString("80" + key);
-    QString prependVersion = QString(prefix + key);
+    QString     prependVersion = QString(prefix + key);
+    QByteArray  BLOB = prependVersion.toUtf8().data();
 
-    QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
+    QByteArray  DoubleHash = helper::CalcHashN(
+        BLOB,
+        {CDigest::dtSHA256, CDigest::dtSHA256});
 
-    QString stingSHA256HashOf3 = helper::getHexHashSha256FromHexString(stingSHA256HashOf2).toUpper();
-
-    QByteArray first4BitesOf4;
-    for (int i = 0; i < 8; i++) {
-        first4BitesOf4.append(stingSHA256HashOf3.at(i));
+    for (int k = 0; k < 4; k++)
+    {
+        BLOB.append(DoubleHash.at(k));
     }
-    QString stringFirst4BitesOf4 = QString(first4BitesOf4);
 
-    QString beforeBase58 = prependVersion + first4BitesOf4;
-
-    return helper::encodeBase58(beforeBase58);
-}
-
+    return helper::encodeBase58(BLOB);
+};
 
 QString helper::GetRandomString()
 {
-   const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-   const int randomStringLength = 255; // assuming you want random strings of 255 characters
+   const    QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+   const    int     randomStringLength = 255; // assuming you want random strings of 255 characters
+   QString          randomString;
 
-   QString randomString;
-   for(int i=0; i<randomStringLength; ++i)
+   for(int i=0; i < randomStringLength; ++i)
    {
-       int index = qrand() % possibleCharacters.length();
-       QChar nextChar = possibleCharacters.at(index);
+       int      index = qrand() % possibleCharacters.length();
+       QChar    nextChar = possibleCharacters.at(index);
+
        randomString.append(nextChar);
    }
+
    return randomString;
-}
+};
 
 QString helper::generateWIF()
 {
     QString phrase = GetRandomString();
-    QString privECDSAKey = helper::getHexHashSha256FromString(phrase).toUpper();
-    QString prependVersion = QString("80" + privECDSAKey);
-    QString stingSHA256HashOf2 = helper::getHexHashSha256FromHexString(prependVersion).toUpper();
-    QString stingSHA256HashOf3 = helper::getHexHashSha256FromHexString(stingSHA256HashOf2).toUpper();
-    QByteArray first4BitesOf4;
-    for (int i = 0; i < 8; i++) {
-        first4BitesOf4.append(stingSHA256HashOf3.at(i));
+
+    QByteArray  PhraseBLOB = QByteArray::fromHex(phrase.toUtf8().data());
+    QByteArray  PrivateKey = helper::CalcHash(PhraseBLOB, CDigest::dtSHA256);
+
+    PrivateKey.insert(0, (char)0x80);
+    QByteArray  BLOB = CalcHashN(
+        PrivateKey,
+        {CDigest::dtSHA256, CDigest::dtSHA256});
+
+    for (int k = 0; k < 4; k++)
+    {
+        PrivateKey.append(BLOB.at(k));
     }
-    QString stringFirst4BitesOf4 = QString(first4BitesOf4);
-    QString beforeBase58 = prependVersion + first4BitesOf4;
-    return helper::encodeBase58(beforeBase58);
-}
+
+    return helper::encodeBase58(PrivateKey);
+};
 
 QString helper::makeWIFCheckSum(QString WIF)
 {
-    QString WIFWork = helper::decodeBase58(QString(WIF));
+    QString WIFWork = helper::decodeBase58(WIF);
+
     WIFWork.chop(4 * 2);
 
     QString WIFWorkCopy = WIFWork;
+
     WIFWorkCopy = helper::getHexHashSha256FromHexString(WIFWorkCopy).toUpper();
     WIFWorkCopy = helper::getHexHashSha256FromHexString(WIFWorkCopy).toUpper();
 
@@ -589,10 +600,6 @@ QString helper::getPublicFromModfiedBasePoint(const QString &publicKey, const QS
     unsigned char resultFromModifiedPoint[clen];
     ret = secp256k1_ec_pubkey_serialize(ctx, resultFromModifiedPoint, &clen, &pubkeyFromModifiedPoint, SECP256K1_EC_UNCOMPRESSED);
     assert(ret);
-
-//    QByteArray pubKeyFromModifiedPoint = QByteArray(reinterpret_cast<const char*>(resultFromModifiedPoint), clen);
-//    QString pubFromModifiedPoint = QString(pubKeyFromModifiedPoint.toHex());
-//    qDebug() << "pubFromModifiedPoint == " << pubFromModifiedPoint;
 
     return QString(QByteArray(reinterpret_cast<const char*>(resultFromModifiedPoint), clen).toHex());
 }
