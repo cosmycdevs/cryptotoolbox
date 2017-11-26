@@ -242,7 +242,8 @@ void BitcoinTests::updateBrainwallet()
     ui->lineEdit_BWt_PrivKey->setText("");
     ui->lineEdit_BWt_Res->setText("");
 
-    try {
+    try
+    {
         // Secret pass phrase
         QString SecPass = ui->lineEdit_BWt_SecPass->text().trimmed();
 
@@ -280,8 +281,9 @@ void BitcoinTests::updateBrainwallet()
         // Resulting address
         ui->lineEdit_BWt_Res->setText(ResultBase58);
 
-    } catch(...) {}
-
+    } catch(...)
+    {
+    }
 }
 
 void BitcoinTests::randAllVanityTest()
