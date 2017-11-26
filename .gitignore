@@ -7,3 +7,4 @@
 /*.bak
 /build-cryptotoolbox-Desktop_Qt_*
 *.user
+/src/*.bak
