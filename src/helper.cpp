@@ -244,19 +244,35 @@ int helper::qt_secp256k1_ec_privkey_tweak_mul(const secp256k1_context* ctx, unsi
 
 QString helper::getPrivateKeysMultiplication(const QString &key1, const QString &key2)
 {
-    const secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+    QString             Result;
+    secp256k1_context   *Context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-    QByteArray ba1 = QByteArray::fromHex(key1.toUtf8().data());
-    unsigned char *result = reinterpret_cast<unsigned char *>(ba1.data());
+    if (Context == nullptr)
+    {
+        return QString();
+    }
+    try
+    {
+        QByteArray      KeyBLOB1 = QByteArray::fromHex(key1.toUtf8().data());
+        QByteArray      KeyBLOB2 = QByteArray::fromHex(key2.toUtf8().data());
 
-    QByteArray ba2 = QByteArray::fromHex(key2.toUtf8().data());
-    const unsigned char *tweak = reinterpret_cast<const unsigned char *>(ba2.data());
+        unsigned char   *Key = reinterpret_cast<unsigned char *>(KeyBLOB1.data());
+        unsigned char   *Tweak = reinterpret_cast<unsigned char *>(KeyBLOB2.data());
 
-    int ret = secp256k1_ec_privkey_tweak_mul(ctx, result, tweak);
-    assert(ret);
+        if (secp256k1_ec_privkey_tweak_mul(Context, Key, Tweak) == 1)
+        {
+            Result = QString(QByteArray(
+                                 reinterpret_cast<const char*>(Key),
+                                 strlen((char*)Key)).toHex());
+        }
+    }
+    catch(...)
+    {
+    }
+    secp256k1_context_destroy(Context);
 
-    return QString(QByteArray(reinterpret_cast<const char*>(result), strlen((char*)result)).toHex());
-}
+    return Result;
+};
 
 QString helper::getPublicKeysSum(const QString &key1, const QString &key2, bool compressedFlag)
 {
