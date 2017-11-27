@@ -3,7 +3,7 @@
 #include "vanity.h"
 
 
-const double cosmyc::Vanity::PatternComplexity(const QString &pattern)
+double cosmyc::Vanity::PatternComplexity(const QString &pattern)
 {
     double res = 1;
     int index = 0;
@@ -16,7 +16,7 @@ const double cosmyc::Vanity::PatternComplexity(const QString &pattern)
     return res * pow(double(58), double(pattern.size() - index)); // 58^m
 }
 
-const double cosmyc::Vanity::PatternLavishness(const uint64_t bounty, const double pattern_compl)
+double cosmyc::Vanity::PatternLavishness(const uint64_t bounty, const double pattern_compl)
 {
     // b - vanity address bounty (in Bitcoins)
     // c - vanity address complexity

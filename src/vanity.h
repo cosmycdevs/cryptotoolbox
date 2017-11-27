@@ -10,9 +10,9 @@ namespace cosmyc
 class Vanity
 {
 public:
-    static const double PatternComplexity(const QString &pattern);
+    static double PatternComplexity(const QString &pattern);
 
-    static const double PatternLavishness(const uint64_t bounty, const double pattern_compl);
+    static double PatternLavishness(const uint64_t bounty, const double pattern_compl);
 };
 
 
