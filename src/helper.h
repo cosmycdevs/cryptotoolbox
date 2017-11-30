@@ -9,46 +9,59 @@
 
 #include <assert.h>
 
+#pragma GCC diagnostic ignored "-Wunused-function"
 #include "secp256k1/include/secp256k1.h"
+#pragma GCC diagnostic warning "-Wunused-function"
 #include "digest.h"
+
+#include "common_defs.h"
 
 #define QT_STRING  helper::convertStdStringToQString
 #define STD_STRING helper::convertQStringToStdString
 
+
 namespace helper {
 
-    std::string convertQStringToStdString(const QString &str);
-    QString convertStdStringToQString(const std::string &str);
+    std::string convertQStringToStdString(
+            __IN    const   QString &str);
+    QString convertStdStringToQString(
+            __IN    const   std::string &str);
 
-    QString encodeBase58(const QByteArray   &Data);
-    QString encodeBase58(const QString &str);
-    QString decodeBase58(const QString &str);
+    QString encodeBase58(
+            __IN    const   QByteArray  &Data);
+    QString encodeBase58(
+            __IN    const   QString &str);
+    QString decodeBase58(
+            __IN    const   QString &str);
 
     QByteArray CalcHash(
-            const   void                    *Data,
-            const   size_t                  DataSize,
-            const   CDigest::DIGEST_TYPE    DigestType);
+            __IN    const   void                    *Data,
+            __IN    const   size_t                  DataSize,
+            __IN    const   CDigest::DIGEST_TYPE    DigestType);
     QByteArray CalcHash(
-            const   QByteArray              &Data,
-            const   CDigest::DIGEST_TYPE    DigestType);
+            __IN    const   QByteArray              &Data,
+            __IN    const   CDigest::DIGEST_TYPE    DigestType);
 
     /// Calculates a hash recursively
     /// Each next iteration of digesting is being
     /// done on the result from the prior iteration.
     QByteArray CalcHashN(
-            const   void                                *Data,
-            const   size_t                              DataSize,
-            const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes);
+            __IN    const   void                                *Data,
+            __IN    const   size_t                              DataSize,
+            __IN    const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes);
     QByteArray CalcHashN(
-            const   QByteArray                          &Data,
-            const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes);
+            __IN    const   QByteArray                          &Data,
+            __IN    const   std::vector<CDigest::DIGEST_TYPE>   &DigestTypes);
 
-    QString getQtHashSha256(const QString &str);
-    QByteArray getQtHexHashSha256(const QByteArray &ba);
-    QString getQtHexHashSha256(const QString &str);
-    QString getQtHexHashSha256FromHexString(const QString &str);
+    QString getQtHashSha256(
+            __IN    const   QString &str);
+    QByteArray getQtHexHashSha256(
+            __IN    const   QByteArray  &ba);
+    QString getQtHexHashSha256(
+            __IN    const   QString &str);
+    QString getQtHexHashSha256FromHexString(
+            __IN    const   QString &str);
 
-    //QByteArray encodeRipemd160(const QByteArray &ba);
     QString getHexHashRipemd160FromHexString(const QString &str);
     QString getHexHashRipemd160FromString(const QString &str);
 
@@ -78,6 +91,10 @@ namespace helper {
 
     void updateContextWithBasePointFromPubkey(secp256k1_context* orig_ctx, const secp256k1_pubkey &pubkey);
     QString getPublicFromModfiedBasePoint(const QString &publicKey, const QString &privateKey);
+
+    bool DecodeHexString(
+            __IN    const   QString     &String,
+            __OUT           QByteArray  &ByteArray);
 }
 
 #endif // HELPER_H

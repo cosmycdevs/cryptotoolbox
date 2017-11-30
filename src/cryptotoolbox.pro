@@ -42,7 +42,8 @@ HEADERS += \
     libs/bitcoin/arith_uint256.h \
     libs/bitcoin/tinyformat.h \
     libs/bitcoin/uint256.h \
-    libs/bitcoin/utilstrencodings.h
+    libs/bitcoin/utilstrencodings.h \
+    common_defs.h
 FORMS += \
     bitcointests.ui
 
