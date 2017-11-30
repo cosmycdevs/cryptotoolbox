@@ -624,25 +624,7 @@ bool helper::DecodeHexString(
         __IN    const   QString     &String,
         __OUT           QByteArray  &ByteArray)
 {
-    if (String.length() == 0)
-    {
-        ByteArray.resize(0);
-        return true;
-    }
-
-    ByteArray.fill((char)0x0);
-
-    std::vector<BYTE_TYPE>  Result;
-
-    for (size_t k = 0; k < HexStr.length(); k += 2)
-    {
-        std::string ByteStr = HexStr.substr(k, 2);
-        char ByteValue = (char)strtol(ByteStr.c_str(), nullptr, 16);
-        Result.push_back(ByteValue);
-    }
-
-    return Result;
-
-
+    _CRT_UNUSED(String);
+    _CRT_UNUSED(ByteArray);
     return false;
 };
